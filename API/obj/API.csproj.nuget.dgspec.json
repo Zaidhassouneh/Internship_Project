@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Zaid\\Documents\\Udemy Courses\\Internship_Project\\API\\API.csproj": {}
+    "D:\\Zaid\\Documents\\Udemy Courses\\Asp.net\\Internship_Project\\API\\API.csproj": {}
   },
   "projects": {
-    "D:\\Zaid\\Documents\\Udemy Courses\\Internship_Project\\API\\API.csproj": {
+    "D:\\Zaid\\Documents\\Udemy Courses\\Asp.net\\Internship_Project\\API\\API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Zaid\\Documents\\Udemy Courses\\Internship_Project\\API\\API.csproj",
+        "projectUniqueName": "D:\\Zaid\\Documents\\Udemy Courses\\Asp.net\\Internship_Project\\API\\API.csproj",
         "projectName": "API",
-        "projectPath": "D:\\Zaid\\Documents\\Udemy Courses\\Internship_Project\\API\\API.csproj",
+        "projectPath": "D:\\Zaid\\Documents\\Udemy Courses\\Asp.net\\Internship_Project\\API\\API.csproj",
         "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-        "outputPath": "D:\\Zaid\\Documents\\Udemy Courses\\Internship_Project\\API\\obj\\",
+        "outputPath": "D:\\Zaid\\Documents\\Udemy Courses\\Asp.net\\Internship_Project\\API\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",
