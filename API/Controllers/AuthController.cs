@@ -34,13 +34,19 @@ public class AuthController : ControllerBase
         // Create password hash
         var (passwordHash, passwordSalt) = _passwordService.CreatePasswordHash(registerDto.Password);
 
+        // Generate refresh token
+        var refreshToken = _tokenService.GenerateRefreshToken();
+        var refreshTokenExpiry = DateTime.UtcNow.AddDays(7);
+
         // Create new user
         var user = new AppUser
         {
             DisplayName = registerDto.DisplayName,
             Email = registerDto.Email.ToLower(),
             PasswordHash = passwordHash,
-            PasswordSalt = passwordSalt
+            PasswordSalt = passwordSalt,
+            RefreshToken = refreshToken,
+            RefreshTokenExpiryTime = refreshTokenExpiry
         };
 
         _context.Users.Add(user);
@@ -52,6 +58,8 @@ public class AuthController : ControllerBase
         var response = new AuthResponseDto
         {
             Token = token,
+            RefreshToken = refreshToken,
+            RefreshTokenExpiry = refreshTokenExpiry,
             User = new UserDto
             {
                 Id = user.Id,
@@ -60,7 +68,7 @@ public class AuthController : ControllerBase
                 CreatedAt = user.CreatedAt,
                 LastLoginAt = user.LastLoginAt
             },
-            ExpiresAt = DateTime.UtcNow.AddDays(7)
+            ExpiresAt = DateTime.UtcNow.AddMinutes(15)
         };
 
         return Ok(response);
@@ -71,7 +79,7 @@ public class AuthController : ControllerBase
     {
         // Find user by email
         var user = await _context.Users.FirstOrDefaultAsync(u => u.Email.ToLower() == loginDto.Email.ToLower());
-        
+
         if (user == null)
         {
             return Unauthorized("Invalid email or password");
@@ -85,6 +93,10 @@ public class AuthController : ControllerBase
 
         // Update last login
         user.LastLoginAt = DateTime.UtcNow;
+
+        // Generate new refresh token
+        user.RefreshToken = _tokenService.GenerateRefreshToken();
+        user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
         await _context.SaveChangesAsync();
 
         // Generate token
@@ -93,6 +105,8 @@ public class AuthController : ControllerBase
         var response = new AuthResponseDto
         {
             Token = token,
+            RefreshToken = user.RefreshToken,
+            RefreshTokenExpiry = user.RefreshTokenExpiryTime ?? DateTime.UtcNow.AddDays(7),
             User = new UserDto
             {
                 Id = user.Id,
@@ -101,9 +115,9 @@ public class AuthController : ControllerBase
                 CreatedAt = user.CreatedAt,
                 LastLoginAt = user.LastLoginAt
             },
-            ExpiresAt = DateTime.UtcNow.AddDays(7)
+            ExpiresAt = DateTime.UtcNow.AddMinutes(15)
         };
 
         return Ok(response);
     }
-} 
+}

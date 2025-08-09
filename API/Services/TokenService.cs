@@ -1,6 +1,8 @@
+
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Security.Cryptography;
 using API.Entites;
 using Microsoft.IdentityModel.Tokens;
 
@@ -10,9 +12,18 @@ public class TokenService
 {
     private readonly IConfiguration _configuration;
 
+
     public TokenService(IConfiguration configuration)
     {
         _configuration = configuration;
+    }
+
+    public string GenerateRefreshToken()
+    {
+        var randomNumber = new byte[64];
+        using var rng = RandomNumberGenerator.Create();
+        rng.GetBytes(randomNumber);
+        return Convert.ToBase64String(randomNumber);
     }
 
     public string CreateToken(AppUser user)
@@ -30,7 +41,7 @@ public class TokenService
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.UtcNow.AddDays(7), // Token expires in 7 days
+            Expires = DateTime.UtcNow.AddMinutes(15), // expired in 15 minutes
             SigningCredentials = creds,
             Issuer = _configuration["JWT:Issuer"],
             Audience = _configuration["JWT:Audience"]
@@ -68,4 +79,4 @@ public class TokenService
             return null;
         }
     }
-} 
+}

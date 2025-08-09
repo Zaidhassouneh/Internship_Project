@@ -9,4 +9,8 @@ public class AppUser
     public required byte[] PasswordSalt { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? LastLoginAt { get; set; }
+
+    // Refresh token properties
+    public string? RefreshToken { get; set; }
+    public DateTime? RefreshTokenExpiryTime { get; set; }
 }
