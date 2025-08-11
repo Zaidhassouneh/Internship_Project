@@ -28,7 +28,9 @@ export interface AuthResponseDto {
   expiresAt: string;
 }
 
-@Injectable({ providedIn: 'root' })
+@Injectable({ 
+  providedIn: 'root' 
+})
 export class AuthService {
   private apiUrl = '/api/auth';
 
