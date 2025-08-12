@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AuthService, RegisterDto } from './auth.service';
+import { AuthService, RegisterDto } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-register',
