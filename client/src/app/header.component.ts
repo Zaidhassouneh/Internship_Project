@@ -4,12 +4,17 @@ import { Component } from '@angular/core';
   selector: 'app-header',
   standalone: true,
   template: `
-  <button class="btn btn-primary">Test Button</button>
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-          <div class="container-fluid">
-        <a class="navbar-brand" href="#">Internship Project</a>
-      </div>
-    </nav>
+<header class="bg-white border-bottom py-2">
+  <nav class="container d-flex justify-content-center gap-3">
+    <button type="button" class="btn btn-outline-success">Home</button>
+    <button type="button" class="btn btn-outline-success">Education</button>
+    <button type="button" class="btn btn-outline-success">About</button>
+    <button type="button" class="btn btn-outline-success">Contact</button>
+  </nav>
+</header>
+
+
+
   `
 })
 export class HeaderComponent {}
