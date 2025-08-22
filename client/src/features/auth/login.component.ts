@@ -18,11 +18,15 @@ export class LoginComponent {
 
   onSubmit() {
     this.authService.login(this.loginData).subscribe({
-      next: res => {
-        console.log('Login successful', res);
-        localStorage.setItem('token', res.token);
-        this.error = '';
-        this.router.navigate(['/home']);
+    next: res => {
+      console.log('Login successful', res);
+
+      // ✅ Save both tokens
+      localStorage.setItem('token', res.token);
+      localStorage.setItem('refreshToken', res.refreshToken);
+
+      this.error = '';
+      this.router.navigate(['/home']);
       },
       error: err => {
         this.error = err.error || 'Login failed';

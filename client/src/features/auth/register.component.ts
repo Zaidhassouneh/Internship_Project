@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService, RegisterDto } from '../../core/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -18,7 +19,7 @@ export class RegisterComponent {
   };
   error: string = '';
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService,private router: Router) {}
 
   onSubmit() {
     this.authService.register(this.registerData).subscribe({
@@ -26,7 +27,8 @@ export class RegisterComponent {
         // Save token, redirect, etc.
         localStorage.setItem('token', res.token);
         this.error = '';
-        // ...navigate to dashboard or home
+         this.router.navigate(['/home']);
+       
       },
       error: err => {
         if (Array.isArray(err.error)) {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 export interface RegisterDto {
   displayName: string;
@@ -43,4 +43,6 @@ export class AuthService {
   login(data: LoginDto): Observable<AuthResponseDto> {
     return this.http.post<AuthResponseDto>(`${this.apiUrl}/login`, data);
   }
+
+  
 }
