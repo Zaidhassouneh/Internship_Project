@@ -121,29 +121,5 @@ public class AuthController : ControllerBase
         return Ok(response);
     }
 
-    [HttpPost("logout")]
-public async Task<IActionResult> Logout([FromBody] string refreshToken)
-{
-    if (string.IsNullOrEmpty(refreshToken))
-    {
-        return BadRequest("Refresh token is required");
-    }
-
-    var user = await _context.Users
-        .FirstOrDefaultAsync(u => u.RefreshToken == refreshToken);
-
-    if (user == null)
-    {
-        return NotFound("User not found or already logged out");
-    }
-
-    // Invalidate the refresh token
-    user.RefreshToken = null;
-    user.RefreshTokenExpiryTime = null;
-
-    await _context.SaveChangesAsync();
-
-    return Ok(new { message = "Logged out successfully" });
-}
 
 }

@@ -74,10 +74,11 @@
           "options": {
             "tsConfig": "tsconfig.spec.json",
             "assets": [
-              {
-                "glob": "**/*",
-                "input": "public"
-              }
+            {
+               "glob": "**/*",
+              "input": "public",
+              "output": "/"
+           }
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",

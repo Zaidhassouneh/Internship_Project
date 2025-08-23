@@ -6,10 +6,12 @@ form {
   border-radius: 8px;
   background: #fff;
 }
+
 label {
   display: block;
   margin-bottom: 0.5rem;
 }
+
 input {
   width: 100%;
   padding: 0.5rem;
@@ -17,16 +19,54 @@ input {
   border-radius: 4px;
   border: 1px solid #ccc;
 }
+
 button {
   width: 100%;
   padding: 0.75rem;
-  background: #007bff;
+  background: #28a745;
   color: #fff;
   border: none;
   border-radius: 4px;
   font-size: 1rem;
 }
+
 .error {
   color: #d9534f;
   margin-bottom: 1rem;
+}
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.auth-divider .line {
+  flex: 1;
+  height: 1px;
+  background: #ccc;
+}
+
+.auth-divider .or-text {
+  margin: 0 10px;
+  color: #666;
+  font-weight: bold;
+}
+
+.auth-link {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 14px;
+  color: #444;
+}
+
+.auth-link .create-account {
+  color: #28a745;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.auth-link .create-account:hover {
+  text-decoration: underline;
 }

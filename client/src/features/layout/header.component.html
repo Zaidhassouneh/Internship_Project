@@ -4,7 +4,7 @@
     <!-- Logo and Brand -->
     <div class="d-flex align-items-center">
    
-      <a class="navbar-brand d-flex align-items-center" href="#">
+      <a class="navbar-brand d-flex align-items-center" routerLink="/home">
         <div class="logo-icon me-2">
           <svg width="40" height="40" viewBox="0 0 40 40">
             <circle cx="20" cy="20" r="18" fill="#28a745"/>
@@ -40,7 +40,7 @@
     <div class="user-avatar me-2">
       <i class="bi bi-person-circle fs-3 text-dark"></i>
     </div>
-    <span class="text-dark me-1">Hi Zaid</span>
+    <span class="text-dark me-1">Hi {{ userName }}</span>
     <i class="bi bi-chevron-down text-dark"></i> <!-- Arrow icon -->
   </button>
 </div>

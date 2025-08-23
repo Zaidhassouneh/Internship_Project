@@ -1,13 +1,29 @@
 <form (ngSubmit)="onSubmit()">
   <h2>Login</h2>
+
   <div>
     <label>Email:</label>
     <input type="email" [(ngModel)]="loginData.email" name="email" required />
   </div>
+
   <div>
     <label>Password:</label>
     <input type="password" [(ngModel)]="loginData.password" name="password" required />
   </div>
+
   <div *ngIf="error" class="error">{{ error }}</div>
+
   <button type="submit">Login</button>
+
+  <div class="auth-divider">
+    <span class="line"></span>
+    <span class="or-text">OR</span>
+    <span class="line"></span>
+  </div>
+
+  
+  <div class="auth-link">
+    Don't have an account?
+    <a routerLink="/register" class="create-account">Create Account</a>
+  </div>
 </form>

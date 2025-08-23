@@ -1,0 +1,9 @@
+<div class="slideshow-container">
+  @for (img of images; track $index) {
+    <img
+      [src]="img"
+      [class.active]="$index === currentIndex"
+      class="slide-image"
+      alt="Slideshow Image">
+  }
+</div>
