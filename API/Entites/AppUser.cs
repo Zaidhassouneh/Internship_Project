@@ -13,4 +13,7 @@ public class AppUser
     // Refresh token properties
     public string? RefreshToken { get; set; }
     public DateTime? RefreshTokenExpiryTime { get; set; }
+
+    public ICollection<LandOffer> LandOffers { get; set; } = new List<LandOffer>();
+
 }

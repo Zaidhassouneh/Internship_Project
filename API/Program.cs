@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<PasswordService>();
+builder.Services.AddSingleton<IFileStorage, LocalFileStorage>();
 
 // Add Entity Framework
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -25,6 +26,8 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+app.UseStaticFiles(); // serves wwwroot/** by default
 
 // Use CORS BEFORE mapping controllers
 app.UseCors("AllowAngularDev");
