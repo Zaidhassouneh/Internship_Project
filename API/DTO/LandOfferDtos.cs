@@ -11,6 +11,7 @@ public class LandOfferCreateDto
     public decimal Price { get; set; }
     public bool IsForRent { get; set; }
     public double? LandSize { get; set; }
+    public int? LeaseDuration { get; set; }
 }
 
 public class LandOfferUpdateDto

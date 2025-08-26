@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AuthService, LoginDto } from '../../core/services/auth.service';
+import { AuthService } from '../../core/services/auth.service';
 import { Router, RouterLink } from '@angular/router';
-
+import { LoginDto } from '../../types/Auth';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -19,16 +19,25 @@ export class LoginComponent {
 
   onSubmit() {
     this.authService.login(this.loginData).subscribe({
-    next: res => {
-      console.log('Login successful', res);
-      localStorage.setItem('displayName', res.user.displayName); // Save display name
-      // ✅ Save both tokens
-      localStorage.setItem('token', res.token);
-      localStorage.setItem('refreshToken', res.refreshToken);
+    // next: res => {
+    //   console.log('Login successful', res);
+    //   localStorage.setItem('displayName', res.user.displayName); // Save display name
+    //   // ✅ Save both tokens
+    //   localStorage.setItem('token', res.token);
+    //   localStorage.setItem('refreshToken', res.refreshToken);
 
-      this.error = '';
-      this.router.navigate(['/home']);
-      },
+    //   this.error = '';
+    //   this.router.navigate(['/home']);
+    //   }
+   next: res => {
+  console.log('Login successful', res);
+  localStorage.setItem('displayName', res.user.displayName);
+  localStorage.setItem('userId', res.user.id);   // ✅ save userId
+  localStorage.setItem('token', res.token);
+  localStorage.setItem('refreshToken', res.refreshToken);
+
+  this.router.navigate(['/home']);
+} ,
      error: err => {
   if (err.error && err.error.errors) {
     this.error = Object.values(err.error.errors).flat().join(', ');

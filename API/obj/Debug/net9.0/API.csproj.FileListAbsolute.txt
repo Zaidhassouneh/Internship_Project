@@ -331,3 +331,4 @@ D:\Zaid\Documents\Udemy Courses\Asp.net\Internship_Project\API\obj\Debug\net9.0\
 D:\Zaid\Documents\Udemy Courses\Asp.net\Internship_Project\API\obj\Debug\net9.0\API.csproj.Up2Date
 D:\Zaid\Documents\Udemy Courses\Asp.net\Internship_Project\API\obj\Debug\net9.0\API.genruntimeconfig.cache
 D:\Zaid\Documents\Udemy Courses\Asp.net\Internship_Project\API\obj\Debug\net9.0\ref\API.dll
+D:\Zaid\Documents\Udemy Courses\Asp.net\Internship_Project\API\bin\Debug\net9.0\API.staticwebassets.runtime.json

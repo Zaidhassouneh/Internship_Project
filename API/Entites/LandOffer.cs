@@ -18,6 +18,8 @@ public class LandOffer
     public bool IsForRent { get; set; }   // true = rent, false = buy
     public double? LandSize { get; set; } // optional (m², dunams, etc.)
 
+    public int? LeaseDuration { get; set; }
+
     // Status
     public bool IsAvailable { get; set; } = true;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

@@ -1,0 +1,67 @@
+<div class="container mt-5">
+  <div class="card shadow">
+    <div class="card-body">
+      <h4 class="card-title text-center mb-4">Create New Land Lease Offer</h4>
+
+      <form [formGroup]="offerForm" (ngSubmit)="submit()">
+        <!-- Title -->
+        <div class="mb-3">
+          <label class="form-label">Offer Title</label>
+          <input type="text" formControlName="title" class="form-control" placeholder="Enter title" />
+        </div>
+
+        <!-- Land Area -->
+        <div class="mb-3">
+          <label class="form-label">Land Area (m²)</label>
+          <input type="number" formControlName="landSize" class="form-control" placeholder="Enter area" />
+        </div>
+
+        <!-- Lease Duration -->
+        <div class="mb-3">
+          <label class="form-label">Lease Duration</label>
+          <input type="text" formControlName="leaseDuration" class="form-control" placeholder="e.g. 12 months" />
+        </div>
+
+        <!-- Price -->
+        <div class="mb-3">
+          <label class="form-label">Price (JOD)</label>
+          <input type="number" formControlName="price" class="form-control" placeholder="Enter price" />
+        </div>
+
+        <!-- Location -->
+        <div class="mb-3">
+          <label class="form-label">Location</label>
+          <input type="text" formControlName="location" class="form-control" placeholder="Enter location" />
+        </div>
+
+        <!-- Description -->
+        <div class="mb-3">
+          <label class="form-label">Description</label>
+          <textarea formControlName="description" class="form-control" rows="3" placeholder="Provide details about the land"></textarea>
+        </div>
+
+        <!-- For Rent / For Sale -->
+        <div class="mb-3 form-check">
+          <input type="checkbox" class="form-check-input" formControlName="isForRent" id="isForRent">
+          <label for="isForRent" class="form-check-label">Is For Rent?</label>
+        </div>
+
+        <!-- Images -->
+        <div class="mb-3">
+          <label class="form-label">Images</label>
+          <input type="file" multiple (change)="onFileSelected($event)" class="form-control" />
+        </div>
+
+        <!-- Preview -->
+        <div class="d-flex flex-wrap gap-2 mb-3">
+          <img *ngFor="let url of previewUrls" [src]="url" class="rounded border" style="width: 100px; height: 100px; object-fit: cover;" />
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" class="btn btn-success w-100" [disabled]="submitting">
+          {{ submitting ? 'Publishing...' : 'Publish Offer' }}
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

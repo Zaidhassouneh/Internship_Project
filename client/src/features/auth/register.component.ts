@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AuthService, RegisterDto } from '../../core/services/auth.service';
+import { AuthService} from '../../core/services/auth.service';
 import { Router } from '@angular/router';
-
+import { RegisterDto } from '../../types/Auth';
 @Component({
   selector: 'app-register',
   standalone: true,
@@ -24,14 +24,20 @@ export class RegisterComponent {
 
   onSubmit() {
     this.authService.register(this.registerData).subscribe({
-      next: res => {
-        // Save token, redirect, etc.
-        localStorage.setItem('token', res.token);
-        localStorage.setItem('displayName', res.user.displayName);
-        this.error = '';
-         this.router.navigate(['/home']);
+      // next: res => {
+      //   // Save token, redirect, etc.
+      //   localStorage.setItem('token', res.token);
+      //   localStorage.setItem('displayName', res.user.displayName);
+      //   this.error = '';
+      //    this.router.navigate(['/home']);
        
-      },
+      // }
+      next: res => {
+  localStorage.setItem('userId', res.user.id);   // ✅ save userId
+  localStorage.setItem('token', res.token);
+  localStorage.setItem('displayName', res.user.displayName);
+  this.router.navigate(['/home']);
+}   ,
       error: err => {
         if (err.error && err.error.errors) {
           // ASP.NET validation error format
