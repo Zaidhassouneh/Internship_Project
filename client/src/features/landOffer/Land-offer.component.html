@@ -1,49 +1,73 @@
+<app-header></app-header>
+
 <div class="container mt-5">
   <div class="card shadow">
     <div class="card-body">
-      <h4 class="card-title text-center mb-4">Create New Land Lease Offer</h4>
+      <h4 class="card-title text-center mb-4">Create New Land Offer</h4>
 
       <form [formGroup]="offerForm" (ngSubmit)="submit()">
+        
         <!-- Title -->
         <div class="mb-3">
           <label class="form-label">Offer Title</label>
           <input type="text" formControlName="title" class="form-control" placeholder="Enter title" />
+          <div class="text-danger" *ngIf="f['title'].touched && f['title'].invalid">
+            <small *ngIf="f['title'].errors?.['required']">Title is required.</small>
+            <small *ngIf="f['title'].errors?.['minlength']">Title must be at least 3 characters.</small>
+          </div>
         </div>
 
         <!-- Land Area -->
         <div class="mb-3">
           <label class="form-label">Land Area (m²)</label>
           <input type="number" formControlName="landSize" class="form-control" placeholder="Enter area" />
-        </div>
-
-        <!-- Lease Duration -->
-        <div class="mb-3">
-          <label class="form-label">Lease Duration</label>
-          <input type="text" formControlName="leaseDuration" class="form-control" placeholder="e.g. 12 months" />
-        </div>
-
-        <!-- Price -->
-        <div class="mb-3">
-          <label class="form-label">Price (JOD)</label>
-          <input type="number" formControlName="price" class="form-control" placeholder="Enter price" />
-        </div>
-
-        <!-- Location -->
-        <div class="mb-3">
-          <label class="form-label">Location</label>
-          <input type="text" formControlName="location" class="form-control" placeholder="Enter location" />
-        </div>
-
-        <!-- Description -->
-        <div class="mb-3">
-          <label class="form-label">Description</label>
-          <textarea formControlName="description" class="form-control" rows="3" placeholder="Provide details about the land"></textarea>
+          <div class="text-danger" *ngIf="f['landSize'].touched && f['landSize'].invalid">
+            <small *ngIf="f['landSize'].errors?.['required']">Land area is required.</small>
+            <small *ngIf="f['landSize'].errors?.['min']">Must be at least 10 m².</small>
+          </div>
         </div>
 
         <!-- For Rent / For Sale -->
         <div class="mb-3 form-check">
           <input type="checkbox" class="form-check-input" formControlName="isForRent" id="isForRent">
           <label for="isForRent" class="form-check-label">Is For Rent?</label>
+        </div>
+
+        <!-- Lease Duration -->
+        <div class="mb-3" *ngIf="f['isForRent'].value">
+          <label class="form-label">Lease Duration (months)</label>
+          <input type="number" formControlName="leaseDuration" class="form-control" placeholder="e.g. 12" />
+          <div class="text-danger" *ngIf="f['leaseDuration'].touched && f['leaseDuration'].invalid">
+            <small *ngIf="f['leaseDuration'].errors?.['min']">Must be at least 1 month.</small>
+          </div>
+        </div>
+
+        <!-- Price -->
+        <div class="mb-3">
+          <label class="form-label">Price (JOD)</label>
+          <input type="number" formControlName="price" class="form-control" placeholder="Enter price" />
+          <div class="text-danger" *ngIf="f['price'].touched && f['price'].invalid">
+            <small *ngIf="f['price'].errors?.['required']">Price is required.</small>
+            <small *ngIf="f['price'].errors?.['min']">Price must be greater than 0.</small>
+          </div>
+        </div>
+
+        <!-- Location -->
+        <div class="mb-3">
+          <label class="form-label">Location</label>
+          <input type="text" formControlName="location" class="form-control" placeholder="Enter location" />
+          <div class="text-danger" *ngIf="f['location'].touched && f['location'].invalid">
+            <small *ngIf="f['location'].errors?.['required']">Location is required.</small>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="mb-3">
+          <label class="form-label">Description</label>
+          <textarea formControlName="description" class="form-control" rows="3" placeholder="Provide details"></textarea>
+          <div class="text-danger" *ngIf="f['description'].touched && f['description'].invalid">
+            <small *ngIf="f['description'].errors?.['maxlength']">Max 500 characters allowed.</small>
+          </div>
         </div>
 
         <!-- Images -->
@@ -54,14 +78,17 @@
 
         <!-- Preview -->
         <div class="d-flex flex-wrap gap-2 mb-3">
-          <img *ngFor="let url of previewUrls" [src]="url" class="rounded border" style="width: 100px; height: 100px; object-fit: cover;" />
+          <img *ngFor="let url of previewUrls" [src]="url" class="rounded border"
+               style="width: 100px; height: 100px; object-fit: cover;" />
         </div>
 
         <!-- Submit -->
-        <button type="submit" class="btn btn-success w-100" [disabled]="submitting">
+        <button type="submit" class="btn btn-success w-100" [disabled]="submitting || offerForm.invalid">
           {{ submitting ? 'Publishing...' : 'Publish Offer' }}
         </button>
       </form>
     </div>
   </div>
 </div>
+
+<app-footer></app-footer>
