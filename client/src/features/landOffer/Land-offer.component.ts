@@ -84,7 +84,13 @@ export class LandOfferComponent {
         : null
     };
 
-    console.log('DTO being sent:', dto);
+    console.log('=== DEBUG LEASE DURATION ===');
+    console.log('isForRent value:', this.f['isForRent'].value);
+    console.log('leaseDuration raw value:', this.f['leaseDuration'].value);
+    console.log('leaseDuration type:', typeof this.f['leaseDuration'].value);
+    console.log('leaseDuration after conversion:', this.f['isForRent'].value ? Number(this.f['leaseDuration'].value) || null : null);
+    console.log('Final DTO:', dto);
+    console.log('===========================');
 
     this.api.createOffer(dto).subscribe({
       next: (offer) => {

@@ -6,4 +6,23 @@
       class="slide-image"
       alt="Slideshow Image">
   }
+  
+  <!-- Navigation Buttons -->
+  <button class="slideshow-btn prev-btn" (click)="previousSlide()">
+    <i class="bi bi-chevron-left"></i>
+  </button>
+  <button class="slideshow-btn next-btn" (click)="nextSlide()">
+    <i class="bi bi-chevron-right"></i>
+  </button>
+  
+  <!-- Indicators -->
+  <div class="slideshow-indicators">
+    @for (img of images; track $index) {
+      <button 
+        class="indicator-btn" 
+        [class.active]="$index === currentIndex"
+        (click)="goToSlide($index)">
+      </button>
+    }
+  </div>
 </div>

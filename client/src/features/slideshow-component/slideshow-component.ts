@@ -3,7 +3,6 @@ import { Component, OnInit, ChangeDetectorRef, DestroyRef, inject } from '@angul
 @Component({
   selector: 'app-slideshow-component',
   standalone: true,
-  // `@for` doesn't need CommonModule, you can remove it if you like.
   templateUrl: './slideshow-component.html',
   styleUrls: ['./slideshow-component.css']
 })
@@ -20,17 +19,41 @@ export class SlideshowComponent implements OnInit {
   ];
 
   currentIndex = 0;
+  private intervalId: any;
 
   // Inject to manually trigger change detection & clean up
   private cd = inject(ChangeDetectorRef);
   private destroyRef = inject(DestroyRef);
 
   ngOnInit(): void {
-    const id = setInterval(() => {
-      this.currentIndex = (this.currentIndex + 1) % this.images.length;
-      this.cd.markForCheck(); // <-- ensures the DOM updates even in zoneless/OnPush
-    }, 5000);
+    this.startSlideshow();
+    this.destroyRef.onDestroy(() => this.stopSlideshow());
+  }
 
-    this.destroyRef.onDestroy(() => clearInterval(id));
+  startSlideshow(): void {
+    this.intervalId = setInterval(() => {
+      this.nextSlide();
+    }, 5000);
+  }
+
+  stopSlideshow(): void {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
+  }
+
+  nextSlide(): void {
+    this.currentIndex = (this.currentIndex + 1) % this.images.length;
+    this.cd.markForCheck();
+  }
+
+  previousSlide(): void {
+    this.currentIndex = this.currentIndex === 0 ? this.images.length - 1 : this.currentIndex - 1;
+    this.cd.markForCheck();
+  }
+
+  goToSlide(index: number): void {
+    this.currentIndex = index;
+    this.cd.markForCheck();
   }
 }

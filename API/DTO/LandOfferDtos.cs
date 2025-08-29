@@ -22,6 +22,7 @@ public class LandOfferUpdateDto
     public decimal? Price { get; set; }
     public bool? IsForRent { get; set; }
     public double? LandSize { get; set; }
+    public int? LeaseDuration { get; set; }
     public bool? IsAvailable { get; set; }
 }
 
@@ -42,6 +43,7 @@ public class LandOfferDto
     public decimal Price { get; set; }
     public bool IsForRent { get; set; }
     public double? LandSize { get; set; }
+    public int? LeaseDuration { get; set; }
     public bool IsAvailable { get; set; }
     public DateTime CreatedAt { get; set; }
     public List<PhotoDto> Photos { get; set; } = new();

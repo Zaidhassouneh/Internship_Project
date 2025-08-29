@@ -1,4 +1,130 @@
 <app-header></app-header>
+
+<!-- Slideshow Component -->
 <app-slideshow-component></app-slideshow-component>
+
+<!-- Hero Section with Land Offer Cards -->
+<section class="hero-section">
+  <div class="container">
+    <div class="row g-4">
+      <!-- Rent Land Card -->
+      <div class="col-md-6">
+        <div class="land-card rent-card" (click)="scrollToOffers()">
+          <div class="card-overlay">
+            <h3 class="card-title">Rent Land</h3>
+            <button class="btn btn-success btn-lg">Learn More</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Offer Land Card -->
+      <div class="col-md-6">
+        <div class="land-card offer-card" (click)="navigateToOfferLand()">
+          <div class="card-overlay">
+            <h3 class="card-title">Offer Land</h3>
+            <button class="btn btn-success btn-lg">Offer Land</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Available Offers Section -->
+<section class="offers-section" id="offers">
+  <div class="container">
+    <h2 class="section-title">Available Offers</h2>
+    
+    <!-- Search and Filter Bar -->
+    <div class="search-filter-bar">
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search for lands..." [(ngModel)]="searchTerm">
+            <button class="btn btn-success" (click)="searchOffers()">Search</button>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="row g-2">
+            <div class="col-4">
+              <select class="form-select" [(ngModel)]="selectedCity">
+                <option value="">All Cities</option>
+                <option *ngFor="let city of cities" [value]="city">{{city}}</option>
+              </select>
+            </div>
+            <div class="col-4">
+              <select class="form-select" [(ngModel)]="selectedPeriod">
+                <option value="">All</option>
+                <option value="rent">Rent</option>
+                <option value="buy">Buy</option>
+              </select>
+            </div>
+            <div class="col-4">
+              <input type="text" class="form-control" placeholder="e.g. 5 Dunums" [(ngModel)]="landSpaceFilter">
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="filter-buttons mt-3">
+        <button class="btn btn-outline-success me-2" (click)="applyFilters()">Filter</button>
+        <button class="btn btn-outline-secondary" (click)="clearFilters()">Clear</button>
+      </div>
+    </div>
+    
+    <!-- Loading State -->
+    <div *ngIf="loading" class="text-center py-5">
+      <div class="spinner-border text-success" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+    
+    <!-- Offers List -->
+    <div *ngIf="!loading" class="offers-list">
+      <div *ngIf="filteredOffers.length === 0" class="text-center py-5">
+        <h4 class="text-muted">No offers found</h4>
+        <p class="text-muted">Try adjusting your search criteria</p>
+      </div>
+      
+      <div *ngFor="let offer of filteredOffers" class="offer-card">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <div class="offer-image">
+              <img [src]="getOfferImage(offer)" 
+                   [alt]="offer.title" 
+                   class="img-fluid"
+                   (error)="onImageError($event)">
+            </div>
+          </div>
+          <div class="col-md-8">
+            <div class="offer-details">
+              <h5 class="offer-title">{{offer.title}}</h5>
+              <p class="offer-info">
+                Land area: {{offer.landSize}} m², location: {{offer.location}}
+                <span *ngIf="offer.leaseDuration" class="lease-info">
+                  , Lease: {{offer.leaseDuration}} months
+                </span>
+              </p>
+              <div class="offer-actions">
+                <button class="btn btn-outline-primary btn-sm rounded-circle me-2" title="Call">
+                  <i class="bi bi-telephone"></i>
+                </button>
+                <button class="btn btn-outline-primary btn-sm rounded-circle me-2" title="Chat">
+                  <i class="bi bi-chat"></i>
+                </button>
+                <button class="btn btn-outline-primary btn-sm rounded-circle" title="Favorite">
+                  <i class="bi bi-heart"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="offer-price">
+          {{offer.price}} JOD
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <app-footer></app-footer>

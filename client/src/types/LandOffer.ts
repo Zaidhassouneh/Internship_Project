@@ -18,6 +18,7 @@ location: string;
 price: number;
 isForRent: boolean;
 landSize?: number;
+leaseDuration?: number | null;
 isAvailable: boolean;
 createdAt: string;
 photos: PhotoDto[];

@@ -74,6 +74,7 @@ public class LandOffersController(AppDbContext db, IFileStorage storage) : Contr
         if (dto.Price.HasValue) offer.Price = dto.Price.Value;
         if (dto.IsForRent.HasValue) offer.IsForRent = dto.IsForRent.Value;
         if (dto.LandSize.HasValue) offer.LandSize = dto.LandSize.Value;
+        if (dto.LeaseDuration.HasValue) offer.LeaseDuration = dto.LeaseDuration.Value;
         if (dto.IsAvailable.HasValue) offer.IsAvailable = dto.IsAvailable.Value;
         offer.UpdatedAt = DateTime.UtcNow;
 
@@ -155,6 +156,7 @@ public class LandOffersController(AppDbContext db, IFileStorage storage) : Contr
         Price = o.Price,
         IsForRent = o.IsForRent,
         LandSize = o.LandSize,
+        LeaseDuration = o.LeaseDuration,
         IsAvailable = o.IsAvailable,
         CreatedAt = o.CreatedAt,
         Photos = o.Photos
