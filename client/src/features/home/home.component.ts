@@ -27,7 +27,19 @@ export class HomeComponent implements OnInit {
   landSpaceFilter = '';
   
   // Available cities for filtering
-  cities: string[] = [];
+  cities: string[] = [
+    'Amman',
+    'Irbid', 
+    'Zarqa',
+    'Mafraq',
+    'Jerash',
+    'Ajloun',
+    'Salt',
+    'Madaba',
+    'Karak',
+    'Tafilah',
+    'Aqaba'
+  ];
 
   constructor(
     private router: Router,
@@ -35,6 +47,7 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.initializeCities();
     this.loadOffers();
   }
 
@@ -45,7 +58,7 @@ export class HomeComponent implements OnInit {
       next: (offers) => {
         this.offers = offers;
         this.filteredOffers = offers;
-        this.extractCities();
+        this.initializeCities();
         this.loading = false;
       },
       error: (error) => {
@@ -55,17 +68,10 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  // Extract unique cities from offers for filtering
-  extractCities() {
-    const citySet = new Set<string>();
-    this.offers.forEach(offer => {
-      if (offer.location) {
-        // Extract city from location (assuming format like "City, Region")
-        const city = offer.location.split(',')[0].trim();
-        citySet.add(city);
-      }
-    });
-    this.cities = Array.from(citySet).sort();
+  // Initialize cities for filtering
+  initializeCities() {
+    // Cities are already defined in the cities array
+    // No need to extract from offers
   }
 
   // Scroll to offers section when "Rent Land" is clicked
@@ -93,7 +99,7 @@ export class HomeComponent implements OnInit {
       return photoUrl;
     }
     // Return an icon image instead of placeholder
-    return 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9Im5vbmUiIHZpZXdCb3g9IjAgMCAyNCAyNCIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZT0iY3VycmVudENvbG9yIiBjbGFzcz0ic2l6ZS02Ij4KICA8cGF0aCBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGQ9Im0yLjI1IDE1Ljc1IDUuMTU5LTUuMTU5YTIuMjUgMi4yNSAwIDAgMSAzLjE4MiAwbDUuMTU5IDUuMTU5bS0xLjUtMS41IDEuNDA5LTEuNDA5YTIuMjUgMi4yNSAwIDAgMSAzLjE4MiAwbDIuOTA5IDIuOTA5bS0xOCAzLjc1aDE2LjVhMS41IDEuNSAwIDAgMCAxLjUtMS41VjZhMS41IDEuNSAwIDAgMC0xLjUtMS41SDMuNzVBMS41IDEuNSAwIDAgMCAyLjI1IDZ2MTJhMS41IDEuNSAwIDAgMCAxLjUgMS41Wm0xMC41LTExLjI1aC4wMDh2LjAwOGgtLjAwOFY4LjI1Wm0uMzc1IDBhLjM3NS4zNzUgMCAxIDEtLjc1IDAgLjM3NS4zNzUgMCAwIDEgLjc1IDBaIiAvPgo8L3N2Zz4=';
+    return 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iY3VycmVudENvbG9yIiBjbGFzcz0ic2l6ZS02Ij4KICA8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xLjUgNmEyLjI1IDIuMjUgMCAwIDEgMi4yNS0yLjI1aDE2LjVBMi4yNSAyLjI1IDAgMCAxIDIyLjUgNnYxMmEyLjI1IDIuMjUgMCAwIDEtMi4yNSAyLjI1SDMuNzVBMi4yNSAyLjI1IDAgMCAxIDEuNSAxOFY2Wk0zIDE2LjA2VjE4YzAgLjQxNC4zMzYuNzUuNzUuNzVoMTYuNUEuNzUuNzUgMCAwIDAgMjEgMTh2LTEuOTRsLTIuNjktMi42ODlhMS41IDEuNSAwIDAgMC0yLjEyIDBsLS44OC44NzkuOTcuOTdhLjc1Ljc1IDAgMSAxLTEuMDYgMS4wNmwtNS4xNi01LjE1OWExLjUgMS41IDAgMCAwLTIuMTIgMEwzIDE2LjA2MVptMTAuMTI1LTcuODFhMS4xMjUgMS4xMjUgMCAxIDEgMi4yNSAwIDEuMTI1IDEuMTI1IDAgMCAxLTIuMjUgMFoiIGNsaXAtcnVsZT0iZXZlbm9kZCIgLz4KPC9zdmc+';
   }
 
   // Handle image loading errors
@@ -106,16 +112,18 @@ export class HomeComponent implements OnInit {
     this.applyFilters();
   }
 
+
+
   // Apply all filters
   applyFilters() {
     this.filteredOffers = this.offers.filter(offer => {
-      // Search term filter
+      // Search term filter - case-insensitive partial matching
       const matchesSearch = !this.searchTerm || 
         offer.title.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         (offer.description && offer.description.toLowerCase().includes(this.searchTerm.toLowerCase())) ||
         offer.location.toLowerCase().includes(this.searchTerm.toLowerCase());
 
-      // City filter
+      // City filter - case-insensitive partial matching
       const matchesCity = !this.selectedCity || 
         offer.location.toLowerCase().includes(this.selectedCity.toLowerCase());
 
@@ -140,4 +148,6 @@ export class HomeComponent implements OnInit {
     this.landSpaceFilter = '';
     this.filteredOffers = this.offers;
   }
+
+
 }

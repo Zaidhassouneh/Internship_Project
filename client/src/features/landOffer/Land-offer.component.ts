@@ -45,13 +45,35 @@ export class LandOfferComponent {
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files) {
-      this.selectedFiles = Array.from(input.files);
-      this.previewUrls = [];
-      this.selectedFiles.forEach(file => {
+      const newFiles = Array.from(input.files);
+      
+      // Check if adding new files would exceed the limit
+      if (this.selectedFiles.length + newFiles.length > 5) {
+        this.toastr.warning('Maximum 5 images allowed. Please remove some images first.');
+        return;
+      }
+      
+      // Add new files to existing ones
+      this.selectedFiles = [...this.selectedFiles, ...newFiles];
+      
+      // Generate previews for new files only
+      newFiles.forEach(file => {
         const reader = new FileReader();
         reader.onload = (e: any) => this.previewUrls.push(e.target.result);
         reader.readAsDataURL(file);
       });
+    }
+  }
+
+  removeImage(index: number) {
+    this.previewUrls.splice(index, 1);
+    this.selectedFiles.splice(index, 1);
+  }
+
+  triggerFileInput() {
+    const fileInput = document.querySelector('.file-input-hidden') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.click();
     }
   }
 

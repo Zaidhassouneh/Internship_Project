@@ -44,12 +44,11 @@
         <div class="col-md-6">
           <div class="input-group">
             <input type="text" class="form-control" placeholder="Search for lands..." [(ngModel)]="searchTerm">
-            <button class="btn btn-success" (click)="searchOffers()">Search</button>
           </div>
         </div>
         <div class="col-md-6">
           <div class="row g-2">
-            <div class="col-4">
+                        <div class="col-4">
               <select class="form-select" [(ngModel)]="selectedCity">
                 <option value="">All Cities</option>
                 <option *ngFor="let city of cities" [value]="city">{{city}}</option>
