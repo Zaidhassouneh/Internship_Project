@@ -2,6 +2,8 @@
 
 My own project at my internship.  
 
+---
+
 ## 🌱Green Bridge
 **Green Bridge** is a website that connects agricultural landowners with farmers.  
 Through this platform, interested farmers can **browse, rent, or buy agricultural land directly**, streamlining both the land rental and purchasing process.  
@@ -36,6 +38,7 @@ Through this platform, interested farmers can **browse, rent, or buy agricultura
 ```bash
 cd client
 ng serve
+---
 The client will typically run at 👉 http://localhost:4200/
 ,
 and the API will run at 👉 https://localhost:5001
