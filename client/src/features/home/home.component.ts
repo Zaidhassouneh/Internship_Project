@@ -132,9 +132,9 @@ export class HomeComponent implements OnInit {
         (this.selectedPeriod === 'rent' && offer.isForRent) ||
         (this.selectedPeriod === 'buy' && !offer.isForRent);
 
-      // Land space filter (basic implementation)
+      // Land space filter (range-based implementation)
       const matchesLandSpace = !this.landSpaceFilter || 
-        (offer.landSize && offer.landSize.toString().includes(this.landSpaceFilter));
+        (offer.landSize && this.matchesLandSizeRange(offer.landSize, this.landSpaceFilter));
 
       return matchesSearch && matchesCity && matchesPeriod && matchesLandSpace;
     });
@@ -149,5 +149,23 @@ export class HomeComponent implements OnInit {
     this.filteredOffers = this.offers;
   }
 
+  // Check if land size matches the filter range
+  private matchesLandSizeRange(landSize: number, filterValue: string): boolean {
+    // Remove any non-numeric characters except decimal points
+    const cleanFilter = filterValue.replace(/[^\d.]/g, '');
+    
+    if (!cleanFilter) return true;
+    
+    const filterNumber = parseFloat(cleanFilter);
+    if (isNaN(filterNumber)) return true;
+    
+    // Calculate the range: filter value ± 10% of the filter value
+    const range = filterNumber * 0.1; // 10% range
+    const minRange = filterNumber - range;
+    const maxRange = filterNumber + range;
+    
+    // Check if the land size falls within the range
+    return landSize >= minRange && landSize <= maxRange;
+  }
 
 }

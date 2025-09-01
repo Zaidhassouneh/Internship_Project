@@ -13,6 +13,7 @@ Through this platform, interested farmers can **browse, rent, or buy agricultura
 ## 🚀 Main Features
 - Landowners can list available agricultural land  
 - Farmers can view, rent, or buy land  
+- Advanced filtering system with range-based area search (m²)
 - Real-time chat  
 - User-friendly interface for both parties  
 
