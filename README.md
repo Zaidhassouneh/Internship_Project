@@ -34,12 +34,14 @@ Through this platform, interested farmers can **browse, rent, or buy agricultura
    ```bash
    cd API
    dotnet watch
-4. Start the client  
-cd client
-ng serve
+   ```
+
+4. **Start the client**  
+   ```bash
+   cd client
+   ng serve
+   ```
 
 ---
-The client will typically run at 👉 http://localhost:4200/
-,
-and the API will run at 👉 https://localhost:5001
-.
+
+The client will typically run at 👉 http://localhost:4200/, and the API will run at 👉 https://localhost:5001.
