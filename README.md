@@ -1,7 +1,8 @@
-# 🌱 Internship_Project
+# Internship_Project
 
 My own project at my internship.  
 
+## 🌱Green Bridge
 **Green Bridge** is a website that connects agricultural landowners with farmers.  
 Through this platform, interested farmers can **browse, rent, or buy agricultural land directly**, streamlining both the land rental and purchasing process.  
 
