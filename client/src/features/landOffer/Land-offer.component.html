@@ -38,7 +38,7 @@
           <label class="form-label">Lease Duration (months)</label>
           <input type="number" formControlName="leaseDuration" class="form-control" placeholder="e.g. 12" />
           <div class="text-danger" *ngIf="f['leaseDuration'].touched && f['leaseDuration'].invalid">
-            <small *ngIf="f['leaseDuration'].errors?.['min']">Must be at least 1 month.</small>
+            <small *ngIf="f['leaseDuration'].errors?.['min']">Must be at least 0 months.</small>
           </div>
         </div>
 

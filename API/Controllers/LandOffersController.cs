@@ -51,6 +51,7 @@ public class LandOffersController(AppDbContext db, IFileStorage storage) : Contr
             Price = dto.Price,
             IsForRent = dto.IsForRent,
             LandSize = dto.LandSize,
+            LeaseDuration = dto.LeaseDuration,
             CreatedAt = DateTime.UtcNow,
             IsAvailable = true
         };

@@ -34,7 +34,7 @@ export class LandOfferComponent {
       price: [0, [Validators.required, Validators.min(1)]],
       landSize: [null, [Validators.required, Validators.min(10)]],
       isForRent: [true],
-      leaseDuration: [null, [Validators.min(1)]]   // only if rent
+      leaseDuration: [null, [Validators.min(0)]]   // only if rent, allow 0
     });
   }
 
@@ -102,7 +102,9 @@ export class LandOfferComponent {
       isForRent: this.f['isForRent'].value ?? true,
       landSize: this.f['landSize'].value ?? null,
       leaseDuration: this.f['isForRent'].value
-        ? Number(this.f['leaseDuration'].value) || null
+        ? (this.f['leaseDuration'].value !== null && this.f['leaseDuration'].value !== undefined && this.f['leaseDuration'].value !== '')
+          ? Number(this.f['leaseDuration'].value)
+          : null
         : null
     };
 
@@ -110,7 +112,11 @@ export class LandOfferComponent {
     console.log('isForRent value:', this.f['isForRent'].value);
     console.log('leaseDuration raw value:', this.f['leaseDuration'].value);
     console.log('leaseDuration type:', typeof this.f['leaseDuration'].value);
-    console.log('leaseDuration after conversion:', this.f['isForRent'].value ? Number(this.f['leaseDuration'].value) || null : null);
+    console.log('leaseDuration after conversion:', this.f['isForRent'].value
+      ? (this.f['leaseDuration'].value !== null && this.f['leaseDuration'].value !== undefined && this.f['leaseDuration'].value !== '')
+        ? Number(this.f['leaseDuration'].value)
+        : null
+      : null);
     console.log('Final DTO:', dto);
     console.log('===========================');
 

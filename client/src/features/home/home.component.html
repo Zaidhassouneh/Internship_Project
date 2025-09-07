@@ -8,7 +8,7 @@
   <div class="container">
     <div class="row g-4">
       <!-- Rent Land Card -->
-      <div class="col-md-6">
+      <div class="col-md-4">
         <div class="land-card rent-card" (click)="scrollToOffers()">
           <div class="card-overlay">
             <h3 class="card-title">Rent Land</h3>
@@ -18,16 +18,25 @@
       </div>
       
       <!-- Offer Land Card -->
-   <!-- Hero Offer Land Card -->
-<div class="col-md-6">
-  <div class="land-card offer-land-card" (click)="navigateToOfferLand()">
-    <img src="/aboutPicture.jpg" alt="Offer Land" class="bg-image">
-    <div class="card-overlay">
-      <h3 class="card-title">Offer Land</h3>
-      <button class="btn btn-success btn-lg">Offer Land</button>
-    </div>
-  </div>
-</div>
+      <div class="col-md-4">
+        <div class="land-card offer-land-card" (click)="navigateToOfferLand()">
+          <img src="/aboutPicture.jpg" alt="Offer Land" class="bg-image">
+          <div class="card-overlay">
+            <h3 class="card-title">Offer Land</h3>
+            <button class="btn btn-success btn-lg">Offer Land</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Farmer Offer Card -->
+      <div class="col-md-4">
+        <div class="land-card farmer-offer-card" (click)="navigateToFarmerOffer()">
+          <div class="card-overlay">
+            <h3 class="card-title">Find Farmers</h3>
+            <button class="btn btn-success btn-lg">Find Farmers</button>
+          </div>
+        </div>
+      </div>
 
     </div>
   </div>
@@ -88,7 +97,7 @@
         <p class="text-muted">Try adjusting your search criteria</p>
       </div>
       
-      <div *ngFor="let offer of filteredOffers" class="offer-card">
+      <div *ngFor="let offer of filteredOffers" class="offer-card" (click)="navigateToOfferDetails(offer.id)">
         <div class="row g-0">
           <div class="col-md-4">
             <div class="offer-image">
@@ -108,13 +117,10 @@
                 </span>
               </p>
               <div class="offer-actions">
-                <button class="btn btn-outline-primary btn-sm rounded-circle me-2" title="Call">
-                  <i class="bi bi-telephone"></i>
-                </button>
-                <button class="btn btn-outline-primary btn-sm rounded-circle me-2" title="Chat">
+                <button class="btn btn-outline-primary btn-sm rounded-circle me-2" title="Chat" (click)="$event.stopPropagation()">
                   <i class="bi bi-chat"></i>
                 </button>
-                <button class="btn btn-outline-primary btn-sm rounded-circle" title="Favorite">
+                <button class="btn btn-outline-primary btn-sm rounded-circle" title="Favorite" (click)="$event.stopPropagation()">
                   <i class="bi bi-heart"></i>
                 </button>
               </div>

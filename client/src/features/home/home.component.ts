@@ -87,6 +87,16 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['/landOffer']);
   }
 
+  // Navigate to farmer offer creation page
+  navigateToFarmerOffer() {
+    this.router.navigate(['/farmerOffer']);
+  }
+
+  // Navigate to land offer details page
+  navigateToOfferDetails(offerId: number) {
+    this.router.navigate(['/landOffer', offerId]);
+  }
+
   // Get the appropriate image for an offer
   getOfferImage(offer: LandOfferDto): string {
     if (offer.photos && offer.photos.length > 0) {

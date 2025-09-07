@@ -20,6 +20,10 @@ getOffers(): Observable<LandOfferDto[]> {
 return this.http.get<LandOfferDto[]>(`${this.base}/landoffers`);
 }
 
+getOfferById(id: number): Observable<LandOfferDto> {
+return this.http.get<LandOfferDto>(`${this.base}/landoffers/${id}`);
+}
+
 
 uploadPhoto(offerId: number, file: File) {
 const fd = new FormData();

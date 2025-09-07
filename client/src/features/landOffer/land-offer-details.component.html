@@ -1,0 +1,165 @@
+<app-header></app-header>
+
+<div class="container mt-4" *ngIf="!loading && !error && offer">
+  <!-- Back Button -->
+  <div class="mb-3">
+    <button class="btn btn-outline-secondary" (click)="goBack()">
+      <i class="bi bi-arrow-left"></i> Back to Offers
+    </button>
+  </div>
+
+  <div class="row">
+    <!-- Left Panel - Image Carousel -->
+    <div class="col-lg-7">
+      <div class="image-carousel-container">
+                 <!-- Main Image -->
+         <div class="main-image-container position-relative">
+           <img [src]="getCurrentImage()" 
+                [alt]="offer.title" 
+                class="main-image"
+                (error)="onImageError($event)"
+                *ngIf="offer.photos && offer.photos.length > 0">
+           
+           <!-- Placeholder when no images -->
+           <div class="image-placeholder" *ngIf="!offer.photos || offer.photos.length === 0">
+             <div class="placeholder-content">
+               <i class="bi bi-image placeholder-icon"></i>
+               <p class="placeholder-text">No Images Available</p>
+               <small class="placeholder-subtext">This land offer doesn't have any photos yet</small>
+             </div>
+           </div>
+           
+           <!-- Navigation Arrows -->
+           <button class="carousel-arrow carousel-arrow-left" 
+                   (click)="previousImage()"
+                   *ngIf="offer.photos && offer.photos.length > 1">
+             <i class="bi bi-chevron-left"></i>
+           </button>
+           <button class="carousel-arrow carousel-arrow-right" 
+                   (click)="nextImage()"
+                   *ngIf="offer.photos && offer.photos.length > 1">
+             <i class="bi bi-chevron-right"></i>
+           </button>
+         </div>
+
+        <!-- Image Indicators -->
+        <div class="image-indicators" *ngIf="offer.photos && offer.photos.length > 1">
+          <span *ngFor="let photo of offer.photos; let i = index" 
+                class="indicator-dot"
+                [class.active]="i === currentImageIndex"
+                (click)="selectImage(i)">
+          </span>
+        </div>
+
+        <!-- Thumbnails -->
+        <div class="thumbnails-container" *ngIf="offer.photos && offer.photos.length > 1">
+          <div class="thumbnails-row">
+            <div *ngFor="let photo of offer.photos; let i = index" 
+                 class="thumbnail-item"
+                 [class.active]="i === currentImageIndex"
+                 (click)="selectImage(i)">
+              <img [src]="getOfferImage(photo)" 
+                   [alt]="offer.title" 
+                   class="thumbnail-image"
+                   (error)="onImageError($event)">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Panel - Land Details and Actions -->
+    <div class="col-lg-5">
+      <div class="land-details-container">
+        <!-- Title and Price -->
+        <div class="title-price-row">
+          <h1 class="land-title">{{ offer.title }}</h1>
+          <div class="price-badge">
+            {{ offer.price }} JOD
+          </div>
+        </div>
+
+        <!-- Key Details Card -->
+        <div class="details-card">
+          <div class="detail-item">
+            <div class="detail-icon">
+              <i class="bi bi-rulers"></i>
+            </div>
+            <div class="detail-content">
+              <span class="detail-label">Size</span>
+              <span class="detail-value">{{ offer.landSize }} m²</span>
+            </div>
+          </div>
+
+          <div class="detail-item" *ngIf="offer.isForRent">
+            <div class="detail-icon">
+              <i class="bi bi-hourglass-split"></i>
+            </div>
+            <div class="detail-content">
+              <span class="detail-label">Rent Duration</span>
+              <span class="detail-value">{{ offer.leaseDuration !== null && offer.leaseDuration !== undefined ? formatLeaseDuration(offer.leaseDuration) : 'Not specified' }}</span>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <div class="detail-icon">
+              <i class="bi bi-geo-alt-fill"></i>
+            </div>
+            <div class="detail-content">
+              <span class="detail-label">Address</span>
+              <span class="detail-value">{{ offer.location }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="description-section" *ngIf="offer.description">
+          <h3 class="section-title">Description</h3>
+          <p class="description-text">{{ offer.description }}</p>
+        </div>
+
+        <!-- Separator -->
+        <div class="separator">
+          <div class="separator-line"></div>
+          <div class="separator-icon">
+            <i class="bi bi-leaf-fill"></i>
+          </div>
+          <div class="separator-line"></div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+          <div class="small-actions">
+            <button class="btn btn-outline-primary btn-sm rounded-circle" title="Chat">
+              <i class="bi bi-chat"></i>
+            </button>
+            <button class="btn btn-outline-primary btn-sm rounded-circle" title="Favorite">
+              <i class="bi bi-heart"></i>
+            </button>
+          </div>
+          
+          <button class="btn btn-primary btn-lg rent-button">
+            <i class="bi bi-house-door"></i>
+            {{ offer.isForRent ? 'Rent Land' : 'Buy Land' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Loading State -->
+<div *ngIf="loading" class="text-center py-5">
+  <div class="spinner-border text-success" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
+
+<!-- Error State -->
+<div *ngIf="error" class="text-center py-5">
+  <h4 class="text-danger">Land offer not found</h4>
+  <p class="text-muted">The land offer you're looking for doesn't exist or has been removed.</p>
+  <button class="btn btn-primary" (click)="goBack()">Go Back to Offers</button>
+</div>
+
+<app-footer></app-footer>
