@@ -32,8 +32,8 @@
       <div class="col-md-4">
         <div class="land-card farmer-offer-card" (click)="navigateToFarmerOffer()">
           <div class="card-overlay">
-            <h3 class="card-title">Find Farmers</h3>
-            <button class="btn btn-success btn-lg">Find Farmers</button>
+            <h3 class="card-title">Offer Farmer</h3>
+            <button class="btn btn-success btn-lg">Offer Farmer</button>
           </div>
         </div>
       </div>
@@ -66,8 +66,9 @@
             <div class="col-4">
               <select class="form-select" [(ngModel)]="selectedPeriod">
                 <option value="">All</option>
-                <option value="rent">Rent</option>
-                <option value="buy">Buy</option>
+                <option value="rent">Rent Land</option>
+                <option value="buy">Buy Land</option>
+                <option value="hire">Hire a Farmer</option>
               </select>
             </div>
             <div class="col-4">
@@ -92,28 +93,44 @@
     
     <!-- Offers List -->
     <div *ngIf="!loading" class="offers-list">
-      <div *ngIf="filteredOffers.length === 0" class="text-center py-5">
-        <h4 class="text-muted">No offers found</h4>
-        <p class="text-muted">Try adjusting your search criteria</p>
+      <!-- No offers message when database is empty -->
+      <div *ngIf="allOffers.length === 0" class="text-center py-5">
+        <h4 class="text-muted">No offers available</h4>
+        <p class="text-muted">Check back later for new offers</p>
       </div>
       
-      <div *ngFor="let offer of filteredOffers" class="offer-card" (click)="navigateToOfferDetails(offer.id)">
+      <!-- Unified offers list -->
+      <div *ngFor="let offer of filteredOffers" 
+           class="offer-card" 
+           [class.farmer-offer-card]="offer.type === 'farmer'"
+           (click)="navigateToOffer(offer)">
         <div class="row g-0">
           <div class="col-md-4">
             <div class="offer-image">
-              <img [src]="getOfferImage(offer)" 
-                   [alt]="offer.title" 
+              <img [src]="getUnifiedOfferImage(offer)" 
+                   [alt]="offer.type === 'land' ? offer.title : offer.fullName" 
                    class="img-fluid"
                    (error)="onImageError($event)">
             </div>
           </div>
           <div class="col-md-8">
             <div class="offer-details">
-              <h5 class="offer-title">{{offer.title}}</h5>
+              <h5 class="offer-title">
+                {{ offer.type === 'land' ? offer.title : offer.fullName }}
+              </h5>
               <p class="offer-info">
-                Land area: {{offer.landSize}} m², location: {{offer.location}}
-                <span *ngIf="offer.leaseDuration" class="lease-info">
-                  , Lease: {{offer.leaseDuration}} months
+                <span *ngIf="offer.type === 'land'">
+                  Land area: {{offer.landSize}} m², location: {{offer.location}}
+                  <span *ngIf="offer.leaseDuration" class="lease-info">
+                    , Lease: {{offer.leaseDuration}} months
+                  </span>
+                </span>
+                <span *ngIf="offer.type === 'farmer'">
+                  <span *ngIf="offer.age">Age: {{offer.age}} years, </span>
+                  Location: {{offer.currentAddress}}
+                  <span *ngIf="offer.description" class="lease-info">
+                    , {{offer.description}}
+                  </span>
                 </span>
               </p>
               <div class="offer-actions">
@@ -127,8 +144,8 @@
             </div>
           </div>
         </div>
-        <div class="offer-price">
-          {{offer.price}} JOD
+        <div class="offer-price" [class.farmer-price]="offer.type === 'farmer'">
+          {{ offer.type === 'land' ? (offer.price + ' JOD') : 'Available' }}
         </div>
       </div>
     </div>

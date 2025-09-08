@@ -7,6 +7,7 @@ import { FooterComponent } from '../layout/footer.component';
 import { SlideshowComponent } from '../slideshow-component/slideshow-component';
 import { LandOfferService } from '../../core/services/LandOffer.Service';
 import { LandOfferDto } from '../../types/LandOffer';
+import { FarmerOfferService, FarmerOfferDto } from '../../core/services/farmer-offer.service';
 
 @Component({
   selector: 'app-home',
@@ -17,7 +18,9 @@ import { LandOfferDto } from '../../types/LandOffer';
 })
 export class HomeComponent implements OnInit {
   offers: LandOfferDto[] = [];
-  filteredOffers: LandOfferDto[] = [];
+  farmerOffers: FarmerOfferDto[] = [];
+  allOffers: any[] = [];
+  filteredOffers: any[] = [];
   loading = false;
   
   // Search and filter properties
@@ -25,6 +28,7 @@ export class HomeComponent implements OnInit {
   selectedCity = '';
   selectedPeriod = '';
   landSpaceFilter = '';
+  filtersApplied = false;
   
   // Available cities for filtering
   cities: string[] = [
@@ -43,12 +47,14 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private landOfferService: LandOfferService
+    private landOfferService: LandOfferService,
+    private farmerOfferService: FarmerOfferService
   ) {}
 
   ngOnInit() {
     this.initializeCities();
     this.loadOffers();
+    this.loadFarmerOffers();
   }
 
   // Load all offers from the API
@@ -57,7 +63,7 @@ export class HomeComponent implements OnInit {
     this.landOfferService.getOffers().subscribe({
       next: (offers) => {
         this.offers = offers;
-        this.filteredOffers = offers;
+        this.createUnifiedOffersList();
         this.initializeCities();
         this.loading = false;
       },
@@ -66,6 +72,55 @@ export class HomeComponent implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  // Load all farmer offers from the API
+  loadFarmerOffers() {
+    this.farmerOfferService.getOffers(true).subscribe({
+      next: (farmerOffers) => {
+        this.farmerOffers = farmerOffers;
+        this.createUnifiedOffersList();
+      },
+      error: (error) => {
+        console.error('Error loading farmer offers:', error);
+      }
+    });
+  }
+
+  // Create unified offers list with both land and farmer offers, sorted by date
+  createUnifiedOffersList() {
+    this.allOffers = [];
+    
+    // Add land offers with type identifier
+    this.offers.forEach(offer => {
+      this.allOffers.push({
+        ...offer,
+        type: 'land',
+        publishedDate: new Date(offer.createdAt || new Date())
+      });
+    });
+    
+    // Add farmer offers with type identifier
+    this.farmerOffers.forEach(offer => {
+      this.allOffers.push({
+        ...offer,
+        type: 'farmer',
+        publishedDate: new Date(offer.updatedAt || offer.createdAt || new Date())
+      });
+    });
+    
+    // Sort by publication date (newest first)
+    this.allOffers.sort((a, b) => b.publishedDate.getTime() - a.publishedDate.getTime());
+    
+    // Initially show all offers (default behavior)
+    this.filteredOffers = [...this.allOffers];
+    this.filtersApplied = false;
+  }
+
+  // Show all offers without any filtering
+  showAllOffers() {
+    this.filteredOffers = [...this.allOffers];
+    this.filtersApplied = false;
   }
 
   // Initialize cities for filtering
@@ -97,6 +152,21 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['/landOffer', offerId]);
   }
 
+  // Navigate to farmer offer details page (if you have one)
+  navigateToFarmerOfferDetails(offerId: number) {
+    // For now, we'll just show an alert or you can create a farmer offer details page
+    console.log('Navigate to farmer offer details:', offerId);
+  }
+
+  // Navigate to offer details based on type
+  navigateToOffer(offer: any) {
+    if (offer.type === 'land') {
+      this.navigateToOfferDetails(offer.id);
+    } else if (offer.type === 'farmer') {
+      this.navigateToFarmerOfferDetails(offer.id);
+    }
+  }
+
   // Get the appropriate image for an offer
   getOfferImage(offer: LandOfferDto): string {
     if (offer.photos && offer.photos.length > 0) {
@@ -110,6 +180,31 @@ export class HomeComponent implements OnInit {
     }
     // Return an icon image instead of placeholder
     return 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iY3VycmVudENvbG9yIiBjbGFzcz0ic2l6ZS02Ij4KICA8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xLjUgNmEyLjI1IDIuMjUgMCAwIDEgMi4yNS0yLjI1aDE2LjVBMi4yNSAyLjI1IDAgMCAxIDIyLjUgNnYxMmEyLjI1IDIuMjUgMCAwIDEtMi4yNSAyLjI1SDMuNzVBMi4yNSAyLjI1IDAgMCAxIDEuNSAxOFY2Wk0zIDE2LjA2VjE4YzAgLjQxNC4zMzYuNzUuNzUuNzVoMTYuNUEuNzUuNzUgMCAwIDAgMjEgMTh2LTEuOTRsLTIuNjktMi42ODlhMS41IDEuNSAwIDAgMC0yLjEyIDBsLS44OC44NzkuOTcuOTdhLjc1Ljc1IDAgMSAxLTEuMDYgMS4wNmwtNS4xNi01LjE1OWExLjUgMS41IDAgMCAwLTIuMTIgMEwzIDE2LjA2MVptMTAuMTI1LTcuODFhMS4xMjUgMS4xMjUgMCAxIDEgMi4yNSAwIDEuMTI1IDEuMTI1IDAgMCAxLTIuMjUgMFoiIGNsaXAtcnVsZT0iZXZlbm9kZCIgLz4KPC9zdmc+';
+  }
+
+  // Get the appropriate image for a farmer offer
+  getFarmerOfferImage(offer: FarmerOfferDto): string {
+    if (offer.photos && offer.photos.length > 0) {
+      // If the photo URL is relative, make it absolute
+      const photoUrl = offer.photos[0].url;
+      if (photoUrl.startsWith('/')) {
+        // Assuming your API serves images from the same domain
+        return `https://localhost:5001${photoUrl}`;
+      }
+      return photoUrl;
+    }
+    // Return a user profile icon instead of placeholder
+    return 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzY2NjY2NiIgY2xhc3M9InNpemUtNiI+CiAgPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBkPSJNMTIgMTJjMi4yMSAwIDQtMS43OSA0LTRzLTEuNzktNC00LTQtNCAxLjc5LTQgNCAxLjc5IDQgNCA0em0wIDJjLTIuNjcgMC04IDEuMzQtOCA0djJoMTZ2LTJjMC0yLjY2LTUuMzMtNC04LTR6IiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIC8+Cjwvc3ZnPg==';
+  }
+
+  // Get the appropriate image for any offer type
+  getUnifiedOfferImage(offer: any): string {
+    if (offer.type === 'land') {
+      return this.getOfferImage(offer);
+    } else if (offer.type === 'farmer') {
+      return this.getFarmerOfferImage(offer);
+    }
+    return '';
   }
 
   // Handle image loading errors
@@ -126,25 +221,50 @@ export class HomeComponent implements OnInit {
 
   // Apply all filters
   applyFilters() {
-    this.filteredOffers = this.offers.filter(offer => {
+    this.filtersApplied = true;
+    
+    this.filteredOffers = this.allOffers.filter(offer => {
       // Search term filter - case-insensitive partial matching
-      const matchesSearch = !this.searchTerm || 
-        offer.title.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        (offer.description && offer.description.toLowerCase().includes(this.searchTerm.toLowerCase())) ||
-        offer.location.toLowerCase().includes(this.searchTerm.toLowerCase());
+      let matchesSearch = false;
+      if (offer.type === 'land') {
+        matchesSearch = !this.searchTerm || 
+          offer.title.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+          (offer.description && offer.description.toLowerCase().includes(this.searchTerm.toLowerCase())) ||
+          offer.location.toLowerCase().includes(this.searchTerm.toLowerCase());
+      } else if (offer.type === 'farmer') {
+        matchesSearch = !this.searchTerm || 
+          offer.fullName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+          (offer.description && offer.description.toLowerCase().includes(this.searchTerm.toLowerCase())) ||
+          offer.currentAddress.toLowerCase().includes(this.searchTerm.toLowerCase());
+      }
 
       // City filter - case-insensitive partial matching
-      const matchesCity = !this.selectedCity || 
-        offer.location.toLowerCase().includes(this.selectedCity.toLowerCase());
+      let matchesCity = false;
+      if (offer.type === 'land') {
+        matchesCity = !this.selectedCity || 
+          offer.location.toLowerCase().includes(this.selectedCity.toLowerCase());
+      } else if (offer.type === 'farmer') {
+        matchesCity = !this.selectedCity || 
+          offer.currentAddress.toLowerCase().includes(this.selectedCity.toLowerCase());
+      }
 
-      // Period filter (rent vs buy)
-      const matchesPeriod = !this.selectedPeriod || 
-        (this.selectedPeriod === 'rent' && offer.isForRent) ||
-        (this.selectedPeriod === 'buy' && !offer.isForRent);
+      // Period filter
+      let matchesPeriod = false;
+      if (!this.selectedPeriod || this.selectedPeriod === '') {
+        matchesPeriod = true; // Show all when no filter selected or "All" is selected
+      } else if (this.selectedPeriod === 'rent') {
+        matchesPeriod = offer.type === 'land' && offer.isForRent;
+      } else if (this.selectedPeriod === 'buy') {
+        matchesPeriod = offer.type === 'land' && !offer.isForRent;
+      } else if (this.selectedPeriod === 'hire') {
+        matchesPeriod = offer.type === 'farmer';
+      }
 
-      // Land space filter (range-based implementation)
-      const matchesLandSpace = !this.landSpaceFilter || 
-        (offer.landSize && this.matchesLandSizeRange(offer.landSize, this.landSpaceFilter));
+      // Land space filter (only for land offers)
+      let matchesLandSpace = true;
+      if (offer.type === 'land' && this.landSpaceFilter) {
+        matchesLandSpace = offer.landSize && this.matchesLandSizeRange(offer.landSize, this.landSpaceFilter);
+      }
 
       return matchesSearch && matchesCity && matchesPeriod && matchesLandSpace;
     });
@@ -156,7 +276,7 @@ export class HomeComponent implements OnInit {
     this.selectedCity = '';
     this.selectedPeriod = '';
     this.landSpaceFilter = '';
-    this.filteredOffers = this.offers;
+    this.showAllOffers();
   }
 
   // Check if land size matches the filter range
