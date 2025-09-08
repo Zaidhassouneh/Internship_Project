@@ -1,0 +1,175 @@
+<app-header></app-header>
+
+<div class="container mt-4" *ngIf="!loading && !error && offer">
+  <!-- Back Button -->
+  <div class="mb-3">
+    <button class="btn btn-outline-secondary" (click)="goBack()">
+      <i class="bi bi-arrow-left"></i> Back to Offers
+    </button>
+  </div>
+
+  <div class="row">
+    <!-- Left Panel - Image Carousel -->
+    <div class="col-lg-7">
+      <div class="image-carousel-container">
+        <!-- Main Image -->
+        <div class="main-image-container position-relative">
+          <img [src]="getCurrentImage()" 
+               [alt]="offer.fullName" 
+               class="main-image"
+               (error)="onImageError($event)"
+               *ngIf="offer.photos && offer.photos.length > 0">
+          
+          <!-- Placeholder when no images -->
+          <div class="image-placeholder" *ngIf="!offer.photos || offer.photos.length === 0">
+            <div class="placeholder-content">
+              <i class="bi bi-person-circle placeholder-icon"></i>
+              <p class="placeholder-text">No Images Available</p>
+              <small class="placeholder-subtext">This farmer offer doesn't have any photos yet</small>
+            </div>
+          </div>
+          
+          <!-- Navigation Arrows -->
+          <button class="carousel-arrow carousel-arrow-left" 
+                  (click)="previousImage()"
+                  *ngIf="offer.photos && offer.photos.length > 1">
+            <i class="bi bi-chevron-left"></i>
+          </button>
+          <button class="carousel-arrow carousel-arrow-right" 
+                  (click)="nextImage()"
+                  *ngIf="offer.photos && offer.photos.length > 1">
+            <i class="bi bi-chevron-right"></i>
+          </button>
+        </div>
+
+        <!-- Image Indicators -->
+        <div class="image-indicators" *ngIf="offer.photos && offer.photos.length > 1">
+          <span *ngFor="let photo of offer.photos; let i = index" 
+                class="indicator-dot"
+                [class.active]="i === currentImageIndex"
+                (click)="selectImage(i)">
+          </span>
+        </div>
+
+        <!-- Thumbnails -->
+        <div class="thumbnails-container" *ngIf="offer.photos && offer.photos.length > 1">
+          <div class="thumbnails-row">
+            <div *ngFor="let photo of offer.photos; let i = index" 
+                 class="thumbnail-item"
+                 [class.active]="i === currentImageIndex"
+                 (click)="selectImage(i)">
+              <img [src]="getFarmerOfferImage(photo)" 
+                   [alt]="offer.fullName" 
+                   class="thumbnail-image"
+                   (error)="onImageError($event)">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Panel - Farmer Details and Actions -->
+    <div class="col-lg-5">
+      <div class="farmer-details-container">
+        <!-- Title and Status -->
+        <div class="title-status-row">
+          <h1 class="farmer-title">{{ offer.fullName }}</h1>
+          <div class="status-badge">
+            Available
+          </div>
+        </div>
+
+        <!-- Key Details Card -->
+        <div class="details-card">
+          <div class="detail-item" *ngIf="offer.age">
+            <div class="detail-icon">
+              <i class="bi bi-calendar3"></i>
+            </div>
+            <div class="detail-content">
+              <span class="detail-label">Age</span>
+              <span class="detail-value">{{ offer.age }} years</span>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <div class="detail-icon">
+              <i class="bi bi-telephone"></i>
+            </div>
+            <div class="detail-content">
+              <span class="detail-label">Contact</span>
+              <span class="detail-value">{{ offer.contactNumber }}</span>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <div class="detail-icon">
+              <i class="bi bi-envelope"></i>
+            </div>
+            <div class="detail-content">
+              <span class="detail-label">Email</span>
+              <span class="detail-value">{{ offer.emailAddress }}</span>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <div class="detail-icon">
+              <i class="bi bi-geo-alt-fill"></i>
+            </div>
+            <div class="detail-content">
+              <span class="detail-label">Location</span>
+              <span class="detail-value">{{ offer.currentAddress }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="description-section" *ngIf="offer.description">
+          <h3 class="section-title">About</h3>
+          <p class="description-text">{{ offer.description }}</p>
+        </div>
+
+        <!-- Separator -->
+        <div class="separator">
+          <div class="separator-line"></div>
+          <div class="separator-icon">
+            <i class="bi bi-person-check-fill"></i>
+          </div>
+          <div class="separator-line"></div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+          <div class="small-actions">
+            <button class="btn btn-outline-primary btn-sm rounded-circle" title="Chat">
+              <i class="bi bi-chat"></i>
+            </button>
+            <button class="btn btn-outline-primary btn-sm rounded-circle" title="Favorite">
+              <i class="bi bi-heart"></i>
+            </button>
+          </div>
+          
+          <button class="btn btn-primary btn-lg hire-button">
+            <i class="bi bi-person-plus"></i>
+            Hire Farmer
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Loading State -->
+<div *ngIf="loading" class="text-center py-5">
+  <div class="spinner-border text-success" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
+
+<!-- Error State -->
+<div *ngIf="error" class="text-center py-5">
+  <h4 class="text-danger">Farmer offer not found</h4>
+  <p class="text-muted">The farmer offer you're looking for doesn't exist or has been removed.</p>
+  <button class="btn btn-primary" (click)="goBack()">Go Back to Offers</button>
+</div>
+
+<app-footer></app-footer>

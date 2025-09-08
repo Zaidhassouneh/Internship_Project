@@ -45,6 +45,13 @@
   background-repeat: no-repeat;
 }
 
+.equipment-offer-card {
+  background-image: url('/top-view-garden-tool-with-potatoes-garlic.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 .offer-card {
   background-image: url('/aboutPicture.jpg');
   cursor: pointer;
@@ -340,11 +347,11 @@
 
 /* Farmer Offer Card Styling */
 .farmer-offer-card {
-  border-left: 4px solid #28a745;
+  /* Removed green left border */
 }
 
 .farmer-offer-card:hover {
-  border-left-color: #20c997;
+  /* Removed green left border hover effect */
 }
 
 .farmer-price {

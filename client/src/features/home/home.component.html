@@ -38,6 +38,16 @@
         </div>
       </div>
 
+      <!-- Equipment Offer Card -->
+      <div class="col-md-4">
+        <div class="land-card equipment-offer-card" (click)="navigateToEquipmentOffer()">
+          <div class="card-overlay">
+            <h3 class="card-title">Offer Equipment</h3>
+            <button class="btn btn-success btn-lg">Offer Equipment</button>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -52,7 +62,7 @@
       <div class="row g-3">
         <div class="col-md-6">
           <div class="input-group">
-            <input type="text" class="form-control" placeholder="Search for lands..." [(ngModel)]="searchTerm">
+            <input type="text" class="form-control" placeholder="Search for offers..." [(ngModel)]="searchTerm">
           </div>
         </div>
         <div class="col-md-6">
@@ -64,14 +74,14 @@
               </select>
             </div>
             <div class="col-4">
-              <select class="form-select" [(ngModel)]="selectedPeriod">
+              <select class="form-select" [(ngModel)]="selectedPeriod" (ngModelChange)="onPeriodFilterChange()">
                 <option value="">All</option>
                 <option value="rent">Rent Land</option>
                 <option value="buy">Buy Land</option>
                 <option value="hire">Hire a Farmer</option>
               </select>
             </div>
-            <div class="col-4">
+            <div class="col-4" *ngIf="selectedPeriod === 'rent' || selectedPeriod === 'buy'">
               <input type="text" class="form-control" placeholder="e.g. 200 m²" [(ngModel)]="landSpaceFilter">
             </div>
           </div>

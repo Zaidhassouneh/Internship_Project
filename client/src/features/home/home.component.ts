@@ -147,15 +147,18 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['/farmerOffer']);
   }
 
+  navigateToEquipmentOffer() {
+    this.router.navigate(['/equipmentOffer']);
+  }
+
   // Navigate to land offer details page
   navigateToOfferDetails(offerId: number) {
     this.router.navigate(['/landOffer', offerId]);
   }
 
-  // Navigate to farmer offer details page (if you have one)
+  // Navigate to farmer offer details page
   navigateToFarmerOfferDetails(offerId: number) {
-    // For now, we'll just show an alert or you can create a farmer offer details page
-    console.log('Navigate to farmer offer details:', offerId);
+    this.router.navigate(['/farmerOffer', offerId]);
   }
 
   // Navigate to offer details based on type
@@ -217,6 +220,14 @@ export class HomeComponent implements OnInit {
     this.applyFilters();
   }
 
+  // Handle period filter change
+  onPeriodFilterChange() {
+    // Clear land space filter when switching to "Hire a Farmer" or "All"
+    if (this.selectedPeriod === 'hire' || !this.selectedPeriod || this.selectedPeriod === '') {
+      this.landSpaceFilter = '';
+    }
+  }
+
 
 
   // Apply all filters
@@ -260,9 +271,9 @@ export class HomeComponent implements OnInit {
         matchesPeriod = offer.type === 'farmer';
       }
 
-      // Land space filter (only for land offers)
+      // Land space filter (only for land offers and when rent/buy is selected)
       let matchesLandSpace = true;
-      if (offer.type === 'land' && this.landSpaceFilter) {
+      if (offer.type === 'land' && this.landSpaceFilter && (this.selectedPeriod === 'rent' || this.selectedPeriod === 'buy')) {
         matchesLandSpace = offer.landSize && this.matchesLandSizeRange(offer.landSize, this.landSpaceFilter);
       }
 
