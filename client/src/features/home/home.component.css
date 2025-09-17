@@ -52,6 +52,185 @@
   background-repeat: no-repeat;
 }
 
+/* Equipment offer card in offers list */
+.offer-card.equipment-offer-card {
+  border-left: none;
+  background: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.offer-card.equipment-offer-card:hover {
+  border-left: 2px solid #28a745;
+  box-shadow: 0 8px 25px rgba(40, 167, 69, 0.2);
+  transform: translateY(-2px);
+}
+
+.offer-card.equipment-offer-card .offer-details {
+  position: relative;
+  z-index: 2;
+}
+
+.offer-card.equipment-offer-card .offer-image {
+  position: relative;
+  z-index: 2;
+}
+
+.equipment-price {
+  background: linear-gradient(135deg, #28a745 0%, #198754 100%);
+  color: white;
+  font-weight: bold;
+  position: relative;
+  z-index: 2;
+}
+
+/* Equipment offer card specific styling */
+.offer-card.equipment-offer-card .offer-title {
+  color: #155724;
+  font-weight: 700;
+  font-size: 1.3rem;
+  margin-bottom: 0.8rem;
+}
+
+.offer-card.equipment-offer-card .offer-info {
+  color: #0f5132;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.offer-card.equipment-offer-card .lease-info {
+  color: #198754;
+  font-weight: 500;
+}
+
+/* Equipment offer card action buttons */
+.offer-card.equipment-offer-card .offer-actions .btn {
+  background: rgba(40, 167, 69, 0.1);
+  border: 1px solid #28a745;
+  color: #155724;
+  transition: all 0.3s ease;
+}
+
+.offer-card.equipment-offer-card .offer-actions .btn:hover {
+  background: #28a745;
+  color: white;
+  transform: scale(1.1);
+}
+
+/* Equipment offer card image styling */
+.offer-card.equipment-offer-card .offer-image img {
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(40, 167, 69, 0.2);
+  transition: all 0.3s ease;
+}
+
+.offer-card.equipment-offer-card:hover .offer-image img {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(40, 167, 69, 0.3);
+}
+
+/* Equipment offer card badge */
+.offer-card.equipment-offer-card::after {
+  content: 'EQUIPMENT';
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: linear-gradient(135deg, #28a745 0%, #198754 100%);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  z-index: 3;
+  box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+}
+
+/* Equipment offer card price styling */
+.offer-card.equipment-offer-card .equipment-price {
+  background: #f8f9fa;
+  color: #28a745;
+  font-weight: bold;
+  padding: 15px 20px;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 1.2rem;
+  border: 2px solid #28a745;
+  margin: 10px;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 2px 8px rgba(40, 167, 69, 0.15);
+  transition: all 0.3s ease;
+}
+
+.offer-card.equipment-offer-card .equipment-price:hover {
+  background: #28a745;
+  color: white;
+  transform: scale(1.02);
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.25);
+}
+
+/* Equipment offer card responsive design */
+@media (max-width: 768px) {
+  .offer-card.equipment-offer-card .offer-title {
+    font-size: 1.1rem;
+  }
+  
+  .offer-card.equipment-offer-card .offer-info {
+    font-size: 0.9rem;
+  }
+  
+  .offer-card.equipment-offer-card::after {
+    font-size: 0.6rem;
+    padding: 3px 8px;
+  }
+}
+
+/* Equipment offer filter styling */
+.search-filter-bar .form-select:focus {
+  border-color: #28a745;
+  box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+}
+
+/* Equipment offer filter labels */
+.search-filter-bar .form-label {
+  color: #155724;
+  font-weight: 600;
+}
+
+/* Equipment offer filter buttons */
+.filter-buttons .btn-outline-success:hover {
+  background-color: #28a745;
+  border-color: #28a745;
+  color: white;
+}
+
+/* Equipment offer card loading state */
+.offer-card.equipment-offer-card.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.offer-card.equipment-offer-card.loading::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  border: 3px solid #28a745;
+  border-top: 3px solid transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  z-index: 4;
+}
+
+@keyframes spin {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
 .offer-card {
   background-image: url('/aboutPicture.jpg');
   cursor: pointer;

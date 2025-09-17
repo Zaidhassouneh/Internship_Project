@@ -8,6 +8,8 @@ import { SlideshowComponent } from '../slideshow-component/slideshow-component';
 import { LandOfferService } from '../../core/services/LandOffer.Service';
 import { LandOfferDto } from '../../types/LandOffer';
 import { FarmerOfferService, FarmerOfferDto } from '../../core/services/farmer-offer.service';
+import { EquipmentOfferService } from '../../core/services/equipment-offer.service';
+import { EquipmentOfferDto, DeliveryType } from '../../types/EquipmentOffer';
 
 @Component({
   selector: 'app-home',
@@ -19,6 +21,7 @@ import { FarmerOfferService, FarmerOfferDto } from '../../core/services/farmer-o
 export class HomeComponent implements OnInit {
   offers: LandOfferDto[] = [];
   farmerOffers: FarmerOfferDto[] = [];
+  equipmentOffers: EquipmentOfferDto[] = [];
   allOffers: any[] = [];
   filteredOffers: any[] = [];
   loading = false;
@@ -28,6 +31,8 @@ export class HomeComponent implements OnInit {
   selectedCity = '';
   selectedPeriod = '';
   landSpaceFilter = '';
+  selectedCondition = '';
+  selectedDeliveryType = '';
   filtersApplied = false;
   
   // Available cities for filtering
@@ -48,13 +53,15 @@ export class HomeComponent implements OnInit {
   constructor(
     private router: Router,
     private landOfferService: LandOfferService,
-    private farmerOfferService: FarmerOfferService
+    private farmerOfferService: FarmerOfferService,
+    private equipmentOfferService: EquipmentOfferService
   ) {}
 
   ngOnInit() {
     this.initializeCities();
     this.loadOffers();
     this.loadFarmerOffers();
+    this.loadEquipmentOffers();
   }
 
   // Load all offers from the API
@@ -87,7 +94,20 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  // Create unified offers list with both land and farmer offers, sorted by date
+  // Load all equipment offers from the API
+  loadEquipmentOffers() {
+    this.equipmentOfferService.getOffers(true).subscribe({
+      next: (equipmentOffers) => {
+        this.equipmentOffers = equipmentOffers;
+        this.createUnifiedOffersList();
+      },
+      error: (error) => {
+        console.error('Error loading equipment offers:', error);
+      }
+    });
+  }
+
+  // Create unified offers list with land, farmer, and equipment offers, sorted by date
   createUnifiedOffersList() {
     this.allOffers = [];
     
@@ -106,6 +126,15 @@ export class HomeComponent implements OnInit {
         ...offer,
         type: 'farmer',
         publishedDate: new Date(offer.updatedAt || offer.createdAt || new Date())
+      });
+    });
+    
+    // Add equipment offers with type identifier
+    this.equipmentOffers.forEach(offer => {
+      this.allOffers.push({
+        ...offer,
+        type: 'equipment',
+        publishedDate: new Date(offer.createdAt || new Date())
       });
     });
     
@@ -161,12 +190,19 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['/farmerOffer', offerId]);
   }
 
+  // Navigate to equipment offer details page
+  navigateToEquipmentOfferDetails(offerId: number) {
+    this.router.navigate(['/equipmentOffer', offerId]);
+  }
+
   // Navigate to offer details based on type
   navigateToOffer(offer: any) {
     if (offer.type === 'land') {
       this.navigateToOfferDetails(offer.id);
     } else if (offer.type === 'farmer') {
       this.navigateToFarmerOfferDetails(offer.id);
+    } else if (offer.type === 'equipment') {
+      this.navigateToEquipmentOfferDetails(offer.id);
     }
   }
 
@@ -200,12 +236,29 @@ export class HomeComponent implements OnInit {
     return 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzY2NjY2NiIgY2xhc3M9InNpemUtNiI+CiAgPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBkPSJNMTIgMTJjMi4yMSAwIDQtMS43OSA0LTRzLTEuNzktNC00LTQtNCAxLjc5LTQgNCAxLjc5IDQgNCA0em0wIDJjLTIuNjcgMC04IDEuMzQtOCA0djJoMTZ2LTJjMC0yLjY2LTUuMzMtNC04LTR6IiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIC8+Cjwvc3ZnPg==';
   }
 
+  // Get the appropriate image for an equipment offer
+  getEquipmentOfferImage(offer: EquipmentOfferDto): string {
+    if (offer.photos && offer.photos.length > 0) {
+      // If the photo URL is relative, make it absolute
+      const photoUrl = offer.photos[0].url;
+      if (photoUrl.startsWith('/')) {
+        // Assuming your API serves images from the same domain
+        return `https://localhost:5001${photoUrl}`;
+      }
+      return photoUrl;
+    }
+    // Return an equipment icon instead of placeholder
+    return 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzY2NjY2NiIgY2xhc3M9InNpemUtNiI+CiAgPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBkPSJNMTIgMkM2LjQ4IDIgMiA2LjQ4IDIgMTJzNC40OCAxMCAxMCAxMCAxMC00LjQ4IDEwLTEwUzE3LjUyIDIgMTIgMnptLTEgMTVoLTJ2LTJoMnYyem0wLTQtSDl2LTJoNHYyem0wLTZIN1Y3aDR2MnptNiAxMGgtMnYtMmgydjJ6bTAtNGgtMnYtMmg0djJ6bTAtNkgxM1Y3aDR2MnoiIGNsaXAtcnVsZT0iZXZlbm9kZCIgLz4KPC9zdmc+';
+  }
+
   // Get the appropriate image for any offer type
   getUnifiedOfferImage(offer: any): string {
     if (offer.type === 'land') {
       return this.getOfferImage(offer);
     } else if (offer.type === 'farmer') {
       return this.getFarmerOfferImage(offer);
+    } else if (offer.type === 'equipment') {
+      return this.getEquipmentOfferImage(offer);
     }
     return '';
   }
@@ -247,6 +300,11 @@ export class HomeComponent implements OnInit {
           offer.fullName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
           (offer.description && offer.description.toLowerCase().includes(this.searchTerm.toLowerCase())) ||
           offer.currentAddress.toLowerCase().includes(this.searchTerm.toLowerCase());
+      } else if (offer.type === 'equipment') {
+        matchesSearch = !this.searchTerm || 
+          offer.title.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+          (offer.description && offer.description.toLowerCase().includes(this.searchTerm.toLowerCase())) ||
+          offer.location.toLowerCase().includes(this.searchTerm.toLowerCase());
       }
 
       // City filter - case-insensitive partial matching
@@ -257,6 +315,9 @@ export class HomeComponent implements OnInit {
       } else if (offer.type === 'farmer') {
         matchesCity = !this.selectedCity || 
           offer.currentAddress.toLowerCase().includes(this.selectedCity.toLowerCase());
+      } else if (offer.type === 'equipment') {
+        matchesCity = !this.selectedCity || 
+          offer.location.toLowerCase().includes(this.selectedCity.toLowerCase());
       }
 
       // Period filter
@@ -269,6 +330,8 @@ export class HomeComponent implements OnInit {
         matchesPeriod = offer.type === 'land' && !offer.isForRent;
       } else if (this.selectedPeriod === 'hire') {
         matchesPeriod = offer.type === 'farmer';
+      } else if (this.selectedPeriod === 'equipment') {
+        matchesPeriod = offer.type === 'equipment';
       }
 
       // Land space filter (only for land offers and when rent/buy is selected)
@@ -277,7 +340,19 @@ export class HomeComponent implements OnInit {
         matchesLandSpace = offer.landSize && this.matchesLandSizeRange(offer.landSize, this.landSpaceFilter);
       }
 
-      return matchesSearch && matchesCity && matchesPeriod && matchesLandSpace;
+      // Equipment condition filter
+      let matchesCondition = true;
+      if (offer.type === 'equipment' && this.selectedCondition) {
+        matchesCondition = offer.condition === this.selectedCondition;
+      }
+
+      // Equipment delivery type filter
+      let matchesDeliveryType = true;
+      if (offer.type === 'equipment' && this.selectedDeliveryType) {
+        matchesDeliveryType = offer.deliveryType === this.selectedDeliveryType;
+      }
+
+      return matchesSearch && matchesCity && matchesPeriod && matchesLandSpace && matchesCondition && matchesDeliveryType;
     });
   }
 
@@ -287,7 +362,25 @@ export class HomeComponent implements OnInit {
     this.selectedCity = '';
     this.selectedPeriod = '';
     this.landSpaceFilter = '';
+    this.selectedCondition = '';
+    this.selectedDeliveryType = '';
     this.showAllOffers();
+  }
+
+  // Get delivery type display name
+  getDeliveryTypeName(type: DeliveryType): string {
+    switch (type) {
+      case DeliveryType.SelfPickup:
+        return 'Self Pickup Only';
+      case DeliveryType.DeliveryPaid:
+        return 'Delivery Available (Additional Fee)';
+      case DeliveryType.FreeDelivery:
+        return 'Free Delivery Included';
+      case DeliveryType.DeliveryOnly:
+        return 'Delivery Only (No Pickup)';
+      default:
+        return 'Unknown';
+    }
   }
 
   // Check if land size matches the filter range

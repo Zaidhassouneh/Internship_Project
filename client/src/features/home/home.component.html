@@ -79,10 +79,27 @@
                 <option value="rent">Rent Land</option>
                 <option value="buy">Buy Land</option>
                 <option value="hire">Hire a Farmer</option>
+                <option value="equipment">Equipment</option>
               </select>
             </div>
             <div class="col-4" *ngIf="selectedPeriod === 'rent' || selectedPeriod === 'buy'">
               <input type="text" class="form-control" placeholder="e.g. 200 m²" [(ngModel)]="landSpaceFilter">
+            </div>
+            <div class="col-4" *ngIf="selectedPeriod === 'equipment'">
+              <select class="form-select" [(ngModel)]="selectedCondition">
+                <option value="">All Conditions</option>
+                <option value="New">New</option>
+                <option value="Used">Used</option>
+              </select>
+            </div>
+            <div class="col-4" *ngIf="selectedPeriod === 'equipment'">
+              <select class="form-select" [(ngModel)]="selectedDeliveryType">
+                <option value="">All Delivery Types</option>
+                <option value="SelfPickup">Self Pickup Only</option>
+                <option value="DeliveryPaid">Delivery Available (Paid)</option>
+                <option value="FreeDelivery">Free Delivery</option>
+                <option value="DeliveryOnly">Delivery Only</option>
+              </select>
             </div>
           </div>
         </div>
@@ -113,12 +130,13 @@
       <div *ngFor="let offer of filteredOffers" 
            class="offer-card" 
            [class.farmer-offer-card]="offer.type === 'farmer'"
+           [class.equipment-offer-card]="offer.type === 'equipment'"
            (click)="navigateToOffer(offer)">
         <div class="row g-0">
           <div class="col-md-4">
             <div class="offer-image">
               <img [src]="getUnifiedOfferImage(offer)" 
-                   [alt]="offer.type === 'land' ? offer.title : offer.fullName" 
+                   [alt]="offer.type === 'land' ? offer.title : (offer.type === 'farmer' ? offer.fullName : offer.title)" 
                    class="img-fluid"
                    (error)="onImageError($event)">
             </div>
@@ -126,7 +144,7 @@
           <div class="col-md-8">
             <div class="offer-details">
               <h5 class="offer-title">
-                {{ offer.type === 'land' ? offer.title : offer.fullName }}
+                {{ offer.type === 'land' ? offer.title : (offer.type === 'farmer' ? offer.fullName : offer.title) }}
               </h5>
               <p class="offer-info">
                 <span *ngIf="offer.type === 'land'">
@@ -142,6 +160,15 @@
                     , {{offer.description}}
                   </span>
                 </span>
+                <span *ngIf="offer.type === 'equipment'">
+                  Condition: {{offer.condition}}, Location: {{offer.location}}
+                  <span *ngIf="offer.deliveryType" class="lease-info">
+                    , Delivery: {{getDeliveryTypeName(offer.deliveryType)}}
+                  </span>
+                  <span *ngIf="offer.contactNumber" class="lease-info">
+                    , Contact: {{offer.contactNumber}}
+                  </span>
+                </span>
               </p>
               <div class="offer-actions">
                 <button class="btn btn-outline-primary btn-sm rounded-circle me-2" title="Chat" (click)="$event.stopPropagation()">
@@ -154,8 +181,10 @@
             </div>
           </div>
         </div>
-        <div class="offer-price" [class.farmer-price]="offer.type === 'farmer'">
-          {{ offer.type === 'land' ? (offer.price + ' JOD') : 'Available' }}
+        <div class="offer-price" 
+             [class.farmer-price]="offer.type === 'farmer'"
+             [class.equipment-price]="offer.type === 'equipment'">
+          {{ offer.type === 'land' ? (offer.price + ' JOD') : (offer.type === 'equipment' ? (offer.price + ' JOD') : 'Available') }}
         </div>
       </div>
     </div>

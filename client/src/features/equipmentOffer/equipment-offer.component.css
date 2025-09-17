@@ -85,6 +85,18 @@
   font-style: italic;
 }
 
+/* Select option styling */
+select option:disabled {
+  color: #6c757d;
+  font-style: italic;
+  background-color: #f8f9fa;
+}
+
+select option:first-child {
+  color: #6c757d;
+  font-style: italic;
+}
+
 .form-check-input:checked {
   background-color: #28a745;
   border-color: #28a745;

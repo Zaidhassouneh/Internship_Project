@@ -1,0 +1,6 @@
+D:\Zaid\Documents\Udemy Courses\Asp.net\Internship_Project\API\obj\Debug\net9.0\AddColumn.csproj.AssemblyReference.cache
+D:\Zaid\Documents\Udemy Courses\Asp.net\Internship_Project\API\obj\Debug\net9.0\AddColumn.GeneratedMSBuildEditorConfig.editorconfig
+D:\Zaid\Documents\Udemy Courses\Asp.net\Internship_Project\API\obj\Debug\net9.0\AddColumn.AssemblyInfoInputs.cache
+D:\Zaid\Documents\Udemy Courses\Asp.net\Internship_Project\API\obj\Debug\net9.0\AddColumn.AssemblyInfo.cs
+D:\Zaid\Documents\Udemy Courses\Asp.net\Internship_Project\API\obj\Debug\net9.0\AddColumn.csproj.CoreCompileInputs.cache
+D:\Zaid\Documents\Udemy Courses\Asp.net\Internship_Project\API\obj\Debug\net9.0\AddColumn.sourcelink.json

@@ -36,6 +36,42 @@
           </div>
         </div>
 
+        <!-- Condition -->
+        <div class="mb-3">
+          <label class="form-label">Condition</label>
+          <select formControlName="condition" class="form-control">
+            <option value="" disabled>Please select condition</option>
+            <option value="New">New</option>
+            <option value="Used">Used</option>
+          </select>
+          <div class="text-danger" *ngIf="f['condition'].touched && f['condition'].invalid">
+            <small *ngIf="f['condition'].errors?.['required']">Condition is required.</small>
+          </div>
+        </div>
+
+        <!-- Delivery Type -->
+        <div class="mb-3">
+          <label class="form-label">Delivery Type</label>
+          <select formControlName="deliveryType" class="form-control">
+            <option value="" disabled>Please select delivery type</option>
+            <option *ngFor="let option of deliveryTypeOptions" [value]="option.value">
+              {{ option.label }}
+            </option>
+          </select>
+          <div class="text-danger" *ngIf="f['deliveryType'].touched && f['deliveryType'].invalid">
+            <small *ngIf="f['deliveryType'].errors?.['required']">Delivery type is required.</small>
+          </div>
+        </div>
+
+        <!-- Contact Number -->
+        <div class="mb-3">
+          <label class="form-label">Contact Number <small class="text-muted">(Optional)</small></label>
+          <input type="tel" formControlName="contactNumber" class="form-control" placeholder="Enter contact number" />
+          <div class="text-danger" *ngIf="f['contactNumber'].touched && f['contactNumber'].invalid">
+            <small *ngIf="f['contactNumber'].errors?.['pattern']">Please enter a valid phone number.</small>
+          </div>
+        </div>
+
         <!-- Description -->
         <div class="mb-3">
           <label class="form-label">Description</label>

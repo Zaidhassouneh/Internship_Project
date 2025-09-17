@@ -50,6 +50,9 @@ public class EquipmentOffersController(AppDbContext db, IFileStorage storage) : 
             Description = dto.Description,
             Price = dto.Price,
             Location = dto.Location,
+            Condition = dto.Condition,
+            DeliveryType = dto.DeliveryType,
+            ContactNumber = dto.ContactNumber,
             CreatedAt = DateTime.UtcNow,
             IsAvailable = true
         };
@@ -71,6 +74,9 @@ public class EquipmentOffersController(AppDbContext db, IFileStorage storage) : 
         if (dto.Description != null) offer.Description = dto.Description;
         if (dto.Price.HasValue) offer.Price = dto.Price.Value;
         if (dto.Location != null) offer.Location = dto.Location;
+        if (dto.Condition != null) offer.Condition = dto.Condition;
+        if (dto.DeliveryType.HasValue) offer.DeliveryType = dto.DeliveryType.Value;
+        if (dto.ContactNumber != null) offer.ContactNumber = dto.ContactNumber;
         if (dto.IsAvailable.HasValue) offer.IsAvailable = dto.IsAvailable.Value;
         offer.UpdatedAt = DateTime.UtcNow;
 
@@ -150,6 +156,9 @@ public class EquipmentOffersController(AppDbContext db, IFileStorage storage) : 
         Description = o.Description,
         Price = o.Price,
         Location = o.Location,
+        Condition = o.Condition,
+        DeliveryType = o.DeliveryType,
+        ContactNumber = o.ContactNumber,
         IsAvailable = o.IsAvailable,
         CreatedAt = o.CreatedAt,
         UpdatedAt = o.UpdatedAt,

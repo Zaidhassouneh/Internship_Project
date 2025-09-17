@@ -2,6 +2,14 @@ using System;
 
 namespace API.Entites;
 
+public enum DeliveryType
+{
+    SelfPickup = 0,           // "Self Pickup Only"
+    DeliveryPaid = 1,         // "Delivery Available (Additional Fee)"
+    FreeDelivery = 2,         // "Free Delivery Included"
+    DeliveryOnly = 3          // "Delivery Only (No Pickup)"
+}
+
 public class EquipmentOffer
 {
     public int Id { get; set; } // Primary key
@@ -15,6 +23,9 @@ public class EquipmentOffer
     public string? Description { get; set; }
     public decimal Price { get; set; }
     public required string Location { get; set; }
+    public required string Condition { get; set; } // "New" or "Used"
+    public DeliveryType DeliveryType { get; set; } = DeliveryType.SelfPickup;
+    public string? ContactNumber { get; set; } // Optional contact number
 
     // Status and metadata
     public bool IsAvailable { get; set; } = true;
