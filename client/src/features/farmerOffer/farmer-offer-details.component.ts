@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HeaderComponent } from '../layout/header.component';
 import { FooterComponent } from '../layout/footer.component';
-import { FarmerOfferService, FarmerOfferDto } from '../../core/services/farmer-offer.service';
+import { FarmerOfferService, FarmerOfferDto, EmploymentType } from '../../core/services/farmer-offer.service';
 
 @Component({
   selector: 'app-farmer-offer-details',
@@ -95,5 +95,38 @@ export class FarmerOfferDetailsComponent implements OnInit {
 
   goBack() {
     this.router.navigate(['/home']);
+  }
+
+  getEmploymentTypeName(type: EmploymentType | string | number): string {
+    console.log('Employment type received:', type, 'Type:', typeof type);
+    
+    // Handle string values from API
+    if (typeof type === 'string') {
+      switch (type.toLowerCase()) {
+        case 'parttime':
+        case 'part-time':
+          return 'Part-Time';
+        case 'fulltime':
+        case 'full-time':
+          return 'Full-Time';
+        default:
+          console.log('Unknown employment type string:', type);
+          return 'Unknown';
+      }
+    }
+    
+    // Handle numeric enum values
+    const numericValue = typeof type === 'number' ? type : (type as any);
+    switch (numericValue) {
+      case EmploymentType.PartTime:
+      case 0:
+        return 'Part-Time';
+      case EmploymentType.FullTime:
+      case 1:
+        return 'Full-Time';
+      default:
+        console.log('Unknown employment type:', type);
+        return 'Unknown';
+    }
   }
 }

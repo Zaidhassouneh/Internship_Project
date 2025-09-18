@@ -3,14 +3,19 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
+export enum EmploymentType {
+  PartTime = 0,    // "Part-Time"
+  FullTime = 1     // "Full-Time"
+}
+
 export interface FarmerOfferDto {
   id: number;
   ownerId: string;
   fullName: string;
   contactNumber: string;
-  emailAddress: string;
   currentAddress: string;
   description: string;
+  employmentType: EmploymentType;
   age?: number;
   isAvailable: boolean;
   createdAt: string;
@@ -28,18 +33,18 @@ export interface FarmerOfferCreateDto {
   ownerId: string;
   fullName: string;
   contactNumber: string;
-  emailAddress: string;
   currentAddress: string;
   description: string;
+  employmentType: EmploymentType;
   age?: number;
 }
 
 export interface FarmerOfferUpdateDto {
   fullName?: string;
   contactNumber?: string;
-  emailAddress?: string;
   currentAddress?: string;
   description?: string;
+  employmentType?: EmploymentType;
   age?: number;
   isAvailable?: boolean;
 }

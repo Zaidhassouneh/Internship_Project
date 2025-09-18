@@ -159,6 +159,9 @@
                 <span *ngIf="offer.type === 'farmer'">
                   <span *ngIf="offer.age">Age: {{offer.age}} years, </span>
                   Location: {{offer.currentAddress}}
+                  <span *ngIf="offer.employmentType !== undefined" class="lease-info">
+                    , Employment: {{getEmploymentTypeName(offer.employmentType)}}
+                  </span>
                   <span *ngIf="offer.description" class="lease-info">
                     , {{offer.description}}
                   </span>

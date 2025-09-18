@@ -38,14 +38,16 @@
           </div>
         </div>
 
-        <!-- Email Address -->
+        <!-- Employment Type -->
         <div class="mb-3">
-          <label class="form-label">Email Address</label>
-          <input type="email" formControlName="emailAddress" class="form-control" placeholder="Enter your email" />
-          <div class="text-danger" *ngIf="f['emailAddress'].touched && f['emailAddress'].invalid">
-            <small *ngIf="f['emailAddress'].errors?.['required']">Email address is required.</small>
-            <small *ngIf="f['emailAddress'].errors?.['email']">Please enter a valid email address.</small>
-            <small *ngIf="f['emailAddress'].errors?.['maxlength']">Email cannot exceed 100 characters.</small>
+          <label class="form-label">Employment Type <span class="text-danger">*</span></label>
+          <select formControlName="employmentType" class="form-control">
+            <option value="" disabled>Select employment type</option>
+            <option [value]="EmploymentType.PartTime">Part-Time</option>
+            <option [value]="EmploymentType.FullTime">Full-Time</option>
+          </select>
+          <div class="text-danger" *ngIf="f['employmentType'].touched && f['employmentType'].invalid">
+            <small *ngIf="f['employmentType'].errors?.['required']">Employment type is required.</small>
           </div>
         </div>
 

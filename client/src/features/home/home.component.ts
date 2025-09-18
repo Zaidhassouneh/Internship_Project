@@ -7,7 +7,7 @@ import { FooterComponent } from '../layout/footer.component';
 import { SlideshowComponent } from '../slideshow-component/slideshow-component';
 import { LandOfferService } from '../../core/services/LandOffer.Service';
 import { LandOfferDto } from '../../types/LandOffer';
-import { FarmerOfferService, FarmerOfferDto } from '../../core/services/farmer-offer.service';
+import { FarmerOfferService, FarmerOfferDto, EmploymentType } from '../../core/services/farmer-offer.service';
 import { EquipmentOfferService } from '../../core/services/equipment-offer.service';
 import { EquipmentOfferDto, DeliveryType } from '../../types/EquipmentOffer';
 
@@ -383,6 +383,39 @@ export class HomeComponent implements OnInit {
       case DeliveryType.DeliveryOnly:
         return 'Delivery Only (No Pickup)';
       default:
+        return 'Unknown';
+    }
+  }
+
+  getEmploymentTypeName(type: EmploymentType | string | number): string {
+    console.log('Employment type received in home:', type, 'Type:', typeof type);
+    
+    // Handle string values from API
+    if (typeof type === 'string') {
+      switch (type.toLowerCase()) {
+        case 'parttime':
+        case 'part-time':
+          return 'Part-Time';
+        case 'fulltime':
+        case 'full-time':
+          return 'Full-Time';
+        default:
+          console.log('Unknown employment type string in home:', type);
+          return 'Unknown';
+      }
+    }
+    
+    // Handle numeric enum values
+    const numericValue = typeof type === 'number' ? type : (type as any);
+    switch (numericValue) {
+      case EmploymentType.PartTime:
+      case 0:
+        return 'Part-Time';
+      case EmploymentType.FullTime:
+      case 1:
+        return 'Full-Time';
+      default:
+        console.log('Unknown employment type in home:', type);
         return 'Unknown';
     }
   }

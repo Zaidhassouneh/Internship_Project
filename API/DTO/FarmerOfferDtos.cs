@@ -1,4 +1,5 @@
 using System;
+using API.Entites;
 
 namespace API.DTO;
 
@@ -16,9 +17,9 @@ public class FarmerOfferCreateDto
     // Required fields
     public string FullName { get; set; } = default!;
     public string ContactNumber { get; set; } = default!;
-    public string EmailAddress { get; set; } = default!;
     public string CurrentAddress { get; set; } = default!;
     public string Description { get; set; } = default!;
+    public EmploymentType EmploymentType { get; set; }
     
     // Optional fields
     public int? Age { get; set; }
@@ -29,9 +30,9 @@ public class FarmerOfferUpdateDto
     // Required fields
     public string? FullName { get; set; }
     public string? ContactNumber { get; set; }
-    public string? EmailAddress { get; set; }
     public string? CurrentAddress { get; set; }
     public string? Description { get; set; }
+    public EmploymentType? EmploymentType { get; set; }
     
     // Optional fields
     public int? Age { get; set; }
@@ -48,9 +49,9 @@ public class FarmerOfferDto
     // Required fields
     public string FullName { get; set; } = default!;
     public string ContactNumber { get; set; } = default!;
-    public string EmailAddress { get; set; } = default!;
     public string CurrentAddress { get; set; } = default!;
     public string Description { get; set; } = default!;
+    public EmploymentType EmploymentType { get; set; }
     
     // Optional fields
     public int? Age { get; set; }

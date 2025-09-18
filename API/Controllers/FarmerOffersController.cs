@@ -27,6 +27,12 @@ public class FarmerOffersController(AppDbContext db, IFileStorage storage) : Con
 
         var items = await q.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
 
+        // Debug: Log all employment types
+        foreach (var item in items)
+        {
+            Console.WriteLine($"DEBUG: FarmerOffer ID {item.Id}, EmploymentType: {item.EmploymentType} (Type: {item.EmploymentType.GetType()})");
+        }
+
         return items.Select(MapToDto).ToList();
     }
 
@@ -43,6 +49,8 @@ public class FarmerOffersController(AppDbContext db, IFileStorage storage) : Con
     [HttpPost]
     public async Task<ActionResult<FarmerOfferDto>> Create([FromBody] FarmerOfferCreateDto dto)
     {
+        Console.WriteLine($"DEBUG: Received EmploymentType: {dto.EmploymentType} (Type: {dto.EmploymentType.GetType()})");
+        
         // Check if the owner exists, if not create a test user
         var owner = await db.Users.FirstOrDefaultAsync(u => u.Id == dto.OwnerId);
         if (owner == null)
@@ -65,13 +73,15 @@ public class FarmerOffersController(AppDbContext db, IFileStorage storage) : Con
             OwnerId = dto.OwnerId,
             FullName = dto.FullName,
             ContactNumber = dto.ContactNumber,
-            EmailAddress = dto.EmailAddress,
             CurrentAddress = dto.CurrentAddress,
             Description = dto.Description,
+            EmploymentType = dto.EmploymentType,
             Age = dto.Age,
             CreatedAt = DateTime.UtcNow,
             IsAvailable = true
         };
+
+        Console.WriteLine($"DEBUG: Storing EmploymentType: {offer.EmploymentType} (Type: {offer.EmploymentType.GetType()})");
 
         db.FarmerOffers.Add(offer);
         await db.SaveChangesAsync();
@@ -88,9 +98,9 @@ public class FarmerOffersController(AppDbContext db, IFileStorage storage) : Con
 
         if (dto.FullName != null) offer.FullName = dto.FullName;
         if (dto.ContactNumber != null) offer.ContactNumber = dto.ContactNumber;
-        if (dto.EmailAddress != null) offer.EmailAddress = dto.EmailAddress;
         if (dto.CurrentAddress != null) offer.CurrentAddress = dto.CurrentAddress;
         if (dto.Description != null) offer.Description = dto.Description;
+        if (dto.EmploymentType.HasValue) offer.EmploymentType = dto.EmploymentType.Value;
         if (dto.Age.HasValue) offer.Age = dto.Age.Value;
         if (dto.IsAvailable.HasValue) offer.IsAvailable = dto.IsAvailable.Value;
         offer.UpdatedAt = DateTime.UtcNow;
@@ -166,24 +176,81 @@ public class FarmerOffersController(AppDbContext db, IFileStorage storage) : Con
         return NoContent();
     }
 
-    private static FarmerOfferDto MapToDto(FarmerOffer o) => new()
+    // DEBUG: GET: api/farmeroffers/debug
+    [HttpGet("debug")]
+    public async Task<ActionResult> DebugData()
     {
-        Id = o.Id,
-        OwnerId = o.OwnerId,
-        FullName = o.FullName,
-        ContactNumber = o.ContactNumber,
-        EmailAddress = o.EmailAddress,
-        CurrentAddress = o.CurrentAddress,
-        Description = o.Description,
-        Age = o.Age,
-        IsAvailable = o.IsAvailable,
-        CreatedAt = o.CreatedAt,
-        UpdatedAt = o.UpdatedAt,
-        Photos = o.Photos
-            .OrderByDescending(p => p.IsMain)
-            .ThenBy(p => p.Id)
-            .Select(p => new FarmerOfferPhotoDto { Id = p.Id, Url = p.Url, IsMain = p.IsMain })
-            .ToList()
-    };
+        var offers = await db.FarmerOffers.ToListAsync();
+        var debugInfo = offers.Select(o => new {
+            Id = o.Id,
+            FullName = o.FullName,
+            EmploymentType = o.EmploymentType,
+            EmploymentTypeValue = (int)o.EmploymentType,
+            EmploymentTypeString = o.EmploymentType.ToString()
+        }).ToList();
+
+        return Ok(debugInfo);
+    }
+
+    // FIX: POST: api/farmeroffers/fix-employment-types
+    [HttpPost("fix-employment-types")]
+    public async Task<ActionResult> FixEmploymentTypes()
+    {
+        var offers = await db.FarmerOffers.ToListAsync();
+        int fixedCount = 0;
+        
+        foreach (var offer in offers)
+        {
+            // Check if employment type is invalid (not 0 or 1)
+            if ((int)offer.EmploymentType != 0 && (int)offer.EmploymentType != 1)
+            {
+                Console.WriteLine($"FIXING: Offer {offer.Id} has invalid employment type {offer.EmploymentType}, setting to PartTime");
+                // Set to PartTime as default
+                offer.EmploymentType = EmploymentType.PartTime;
+                fixedCount++;
+            }
+        }
+        
+        if (fixedCount > 0)
+        {
+            await db.SaveChangesAsync();
+            return Ok($"Fixed {fixedCount} employment type values");
+        }
+        
+        return Ok("No employment types needed fixing");
+    }
+
+    private static FarmerOfferDto MapToDto(FarmerOffer o) 
+    {
+        Console.WriteLine($"DEBUG: Mapping FarmerOffer ID {o.Id}, EmploymentType: {o.EmploymentType} (Type: {o.EmploymentType.GetType()})");
+        
+        // Ensure the employment type is valid
+        var employmentType = o.EmploymentType;
+        if ((int)employmentType != 0 && (int)employmentType != 1)
+        {
+            Console.WriteLine($"WARNING: Invalid employment type {employmentType} for offer {o.Id}, setting to PartTime");
+            employmentType = EmploymentType.PartTime;
+        }
+        
+        return new FarmerOfferDto
+        {
+            Id = o.Id,
+            OwnerId = o.OwnerId,
+            FullName = o.FullName,
+            ContactNumber = o.ContactNumber,
+            CurrentAddress = o.CurrentAddress,
+            Description = o.Description,
+            EmploymentType = employmentType,
+            Age = o.Age,
+            IsAvailable = o.IsAvailable,
+            CreatedAt = o.CreatedAt,
+            UpdatedAt = o.UpdatedAt,
+            Photos = o.Photos
+                .OrderByDescending(p => p.IsMain)
+                .ThenBy(p => p.Id)
+                .Select(p => new FarmerOfferPhotoDto { Id = p.Id, Url = p.Url, IsMain = p.IsMain })
+                .ToList()
+        };
+    }
 }
 

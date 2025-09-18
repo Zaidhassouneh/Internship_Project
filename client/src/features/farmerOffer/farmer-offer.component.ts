@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { FarmerOfferService } from '../../core/services/farmer-offer.service';
+import { FarmerOfferService, EmploymentType } from '../../core/services/farmer-offer.service';
 import { AuthService } from '../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from '../layout/header.component';
@@ -20,6 +20,7 @@ export class FarmerOfferComponent implements OnInit {
   selectedFiles: File[] = [];
   isSubmitting = false;
   previewUrls: string[] = [];
+  EmploymentType = EmploymentType; // Make enum available in template
 
   constructor(
     private fb: FormBuilder,
@@ -37,9 +38,9 @@ export class FarmerOfferComponent implements OnInit {
     this.farmerOfferForm = this.fb.group({
       fullName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
       contactNumber: ['', [Validators.required, Validators.pattern(/^[\+]?[0-9\s\-\(\)]{10,15}$/)]],
-      emailAddress: ['', [Validators.required, Validators.email, Validators.maxLength(100)]],
       currentAddress: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(200)]],
       description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(1000)]],
+      employmentType: ['', [Validators.required]],
       age: [null, [Validators.min(18), Validators.max(100)]]
     });
   }
@@ -103,9 +104,9 @@ export class FarmerOfferComponent implements OnInit {
       ownerId: ownerId,
       fullName: this.f['fullName'].value,
       contactNumber: this.f['contactNumber'].value,
-      emailAddress: this.f['emailAddress'].value,
       currentAddress: this.f['currentAddress'].value,
       description: this.f['description'].value,
+      employmentType: this.f['employmentType'].value,
       age: this.f['age'].value || null
     };
 
