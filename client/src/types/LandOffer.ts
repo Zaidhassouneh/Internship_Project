@@ -7,7 +7,8 @@ location: string;
 price: number;
 isForRent: boolean;
 landSize?: number;
-leaseDuration?: number | null; 
+leaseDuration?: number | null;
+contactNumber: string;
 }
 export interface LandOfferDto {
 id: number;
@@ -19,6 +20,7 @@ price: number;
 isForRent: boolean;
 landSize?: number;
 leaseDuration?: number | null;
+contactNumber: string;
 isAvailable: boolean;
 createdAt: string;
 photos: PhotoDto[];

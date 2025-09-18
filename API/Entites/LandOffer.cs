@@ -19,6 +19,7 @@ public class LandOffer
     public double? LandSize { get; set; } // optional (m², dunams, etc.)
 
     public int? LeaseDuration { get; set; }
+    public required string ContactNumber { get; set; } // Required contact number
 
     // Status
     public bool IsAvailable { get; set; } = true;

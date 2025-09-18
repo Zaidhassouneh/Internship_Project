@@ -25,7 +25,7 @@ public class EquipmentOffer
     public required string Location { get; set; }
     public required string Condition { get; set; } // "New" or "Used"
     public DeliveryType DeliveryType { get; set; } = DeliveryType.SelfPickup;
-    public string? ContactNumber { get; set; } // Optional contact number
+    public required string ContactNumber { get; set; } // Required contact number
 
     // Status and metadata
     public bool IsAvailable { get; set; } = true;

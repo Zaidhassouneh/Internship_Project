@@ -52,6 +52,7 @@ public class LandOffersController(AppDbContext db, IFileStorage storage) : Contr
             IsForRent = dto.IsForRent,
             LandSize = dto.LandSize,
             LeaseDuration = dto.LeaseDuration,
+            ContactNumber = dto.ContactNumber,
             CreatedAt = DateTime.UtcNow,
             IsAvailable = true
         };
@@ -76,6 +77,7 @@ public class LandOffersController(AppDbContext db, IFileStorage storage) : Contr
         if (dto.IsForRent.HasValue) offer.IsForRent = dto.IsForRent.Value;
         if (dto.LandSize.HasValue) offer.LandSize = dto.LandSize.Value;
         if (dto.LeaseDuration.HasValue) offer.LeaseDuration = dto.LeaseDuration.Value;
+        if (dto.ContactNumber != null) offer.ContactNumber = dto.ContactNumber;
         if (dto.IsAvailable.HasValue) offer.IsAvailable = dto.IsAvailable.Value;
         offer.UpdatedAt = DateTime.UtcNow;
 
@@ -158,6 +160,7 @@ public class LandOffersController(AppDbContext db, IFileStorage storage) : Contr
         IsForRent = o.IsForRent,
         LandSize = o.LandSize,
         LeaseDuration = o.LeaseDuration,
+        ContactNumber = o.ContactNumber,
         IsAvailable = o.IsAvailable,
         CreatedAt = o.CreatedAt,
         Photos = o.Photos

@@ -28,8 +28,9 @@ public class EquipmentOfferCreateDto
     
     public DeliveryType DeliveryType { get; set; } = DeliveryType.SelfPickup;
     
+    [Required]
     [Phone]
-    public string? ContactNumber { get; set; }
+    public string ContactNumber { get; set; } = string.Empty;
 }
 
 public class EquipmentOfferUpdateDto

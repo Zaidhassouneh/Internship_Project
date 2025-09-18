@@ -152,6 +152,9 @@
                   <span *ngIf="offer.leaseDuration" class="lease-info">
                     , Lease: {{offer.leaseDuration}} months
                   </span>
+                  <span *ngIf="offer.contactNumber" class="lease-info">
+                    , Contact: {{offer.contactNumber}}
+                  </span>
                 </span>
                 <span *ngIf="offer.type === 'farmer'">
                   <span *ngIf="offer.age">Age: {{offer.age}} years, </span>

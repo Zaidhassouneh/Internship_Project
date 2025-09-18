@@ -65,9 +65,10 @@
 
         <!-- Contact Number -->
         <div class="mb-3">
-          <label class="form-label">Contact Number <small class="text-muted">(Optional)</small></label>
+          <label class="form-label">Contact Number <span class="text-danger">*</span></label>
           <input type="tel" formControlName="contactNumber" class="form-control" placeholder="Enter contact number" />
           <div class="text-danger" *ngIf="f['contactNumber'].touched && f['contactNumber'].invalid">
+            <small *ngIf="f['contactNumber'].errors?.['required']">Contact number is required.</small>
             <small *ngIf="f['contactNumber'].errors?.['pattern']">Please enter a valid phone number.</small>
           </div>
         </div>

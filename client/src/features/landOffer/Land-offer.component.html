@@ -61,6 +61,17 @@
           </div>
         </div>
 
+        <!-- Contact Number -->
+        <div class="mb-3">
+          <label class="form-label">Contact Number <span class="text-danger">*</span></label>
+          <input type="tel" formControlName="contactNumber" class="form-control" placeholder="Enter your contact number" />
+          <div class="text-danger" *ngIf="f['contactNumber'].touched && f['contactNumber'].invalid">
+            <small *ngIf="f['contactNumber'].errors?.['required']">Contact number is required.</small>
+            <small *ngIf="f['contactNumber'].errors?.['pattern']">Please enter a valid phone number.</small>
+            <small *ngIf="f['contactNumber'].errors?.['minlength']">Contact number must be at least 8 characters.</small>
+          </div>
+        </div>
+
         <!-- Description -->
         <div class="mb-3">
           <label class="form-label">Description</label>

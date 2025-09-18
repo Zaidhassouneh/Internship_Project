@@ -42,7 +42,7 @@ export class EquipmentOfferComponent {
       description: ['', [Validators.maxLength(500)]],
       price: [0, [Validators.required, Validators.min(1)]],
       deliveryType: ['', Validators.required],
-      contactNumber: ['', [Validators.pattern(/^[\+]?[0-9\s\-\(\)]{7,15}$/)]]
+      contactNumber: ['', [Validators.required, Validators.pattern(/^[\+]?[0-9\s\-\(\)]{7,15}$/)]]
     });
   }
 

@@ -34,7 +34,8 @@ export class LandOfferComponent {
       price: [0, [Validators.required, Validators.min(1)]],
       landSize: [null, [Validators.required, Validators.min(10)]],
       isForRent: [true],
-      leaseDuration: [null, [Validators.min(0)]]   // only if rent, allow 0
+      leaseDuration: [null, [Validators.min(0)]],   // only if rent, allow 0
+      contactNumber: ['', [Validators.required, Validators.pattern(/^[0-9+\-\s()]+$/), Validators.minLength(8)]]
     });
   }
 
@@ -105,7 +106,8 @@ export class LandOfferComponent {
         ? (this.f['leaseDuration'].value !== null && this.f['leaseDuration'].value !== undefined && this.f['leaseDuration'].value !== '')
           ? Number(this.f['leaseDuration'].value)
           : null
-        : null
+        : null,
+      contactNumber: this.f['contactNumber'].value
     };
 
     console.log('=== DEBUG LEASE DURATION ===');
