@@ -31,6 +31,11 @@ export class EquipmentOfferService {
     return this.http.get<EquipmentOfferDto>(`${this.apiUrl}/${id}`);
   }
 
+  // Get single equipment offer by ID (alias for consistency)
+  getOfferById(id: number): Observable<EquipmentOfferDto> {
+    return this.getOffer(id);
+  }
+
   // Create new equipment offer
   createOffer(offer: EquipmentOfferCreateDto): Observable<EquipmentOfferDto> {
     return this.http.post<EquipmentOfferDto>(this.apiUrl, offer);

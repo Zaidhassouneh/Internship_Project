@@ -241,14 +241,17 @@ export class HomeComponent implements OnInit {
     if (offer.photos && offer.photos.length > 0) {
       // If the photo URL is relative, make it absolute
       const photoUrl = offer.photos[0].url;
-      if (photoUrl.startsWith('/')) {
-        // Assuming your API serves images from the same domain
+        if (photoUrl.startsWith('/images/')) {
+        // URL already includes /images/, just add the base URL
         return `https://localhost:5001${photoUrl}`;
+      } else if (photoUrl.startsWith('/')) {
+        // URL starts with / but not /images/, add /images
+        return `https://localhost:5001/images${photoUrl}`;
       }
       return photoUrl;
     }
-    // Return an equipment icon instead of placeholder
-    return 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzY2NjY2NiIgY2xhc3M9InNpemUtNiI+CiAgPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBkPSJNMTIgMkM2LjQ4IDIgMiA2LjQ4IDIgMTJzNC40OCAxMCAxMCAxMCAxMC00LjQ4IDEwLTEwUzE3LjUyIDIgMTIgMnptLTEgMTVoLTJ2LTJoMnYyem0wLTQtSDl2LTJoNHYyem0wLTZIN1Y3aDR2MnptNiAxMGgtMnYtMmgydjJ6bTAtNGgtMnYtMmg0djJ6bTAtNkgxM1Y3aDR2MnoiIGNsaXAtcnVsZT0iZXZlbm9kZCIgLz4KPC9zdmc+';
+    // Return an equipment/tools icon instead of placeholder
+    return 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjI1MCIgdmlld0JveD0iMCAwIDQwMCAyNTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMjUwIiBmaWxsPSIjRjVGNUY1Ii8+CjxjaXJjbGUgY3g9IjIwMCIgY3k9IjEyNSIgcj0iODAiIGZpbGw9IiNEOUQ5RDkiLz4KPHN2ZyB4PSIxNjAiIHk9Ijg1IiB3aWR0aD0iODAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzk5OTk5OSI+CjxwYXRoIGQ9Ik0xOSA3SDVjLTEuMSAwLTIgLjktMiAyVjE5YzAgMS4xLjkgMiAyIDJoMTRjMS4xIDAgMi0uOSAyLTJWOWMwLTEuMS0uOS0yLTItMnoiLz4KPHBhdGggZD0iTTkgMTJIMTVWMTZIOVYxMloiLz4KPHBhdGggZD0iTTE3IDEySDIxVjE2SDE3VjEyWiIvPgo8cGF0aCBkPSJNOSAxOEgxNVYyMkg5VjE4WiIvPgo8cGF0aCBkPSJNMTcgMThIMjFWMjJIMTdWMThaIi8+CjxwYXRoIGQ9Ik0xMyAxMEgxMVYxNEgxM1YxMFoiLz4KPHBhdGggZD0iTTE5IDEwSDE3VjE0SDE5VjEwWiIvPgo8cGF0aCBkPSJNMTMgMTZIMTFWMjBIMTNWMTZaIi8+CjxwYXRoIGQ9Ik0xOSAxNkgxN1YyMEgxOVYxNloiLz4KPC9zdmc+Cjx0ZXh0IHg9IjIwMCIgeT0iMTQwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM5OTk5OTkiIHRleHQtYW5jaG9yPSJtaWRkbGUiPk5vIEltYWdlPC90ZXh0Pgo8L3N2Zz4K';
   }
 
   // Get the appropriate image for any offer type
@@ -265,7 +268,8 @@ export class HomeComponent implements OnInit {
 
   // Handle image loading errors
   onImageError(event: any) {
-    event.target.src = 'https://via.placeholder.com/400x250?text=Image+Not+Found';
+    // Use a data URI for a simple placeholder instead of external service
+    event.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjI1MCIgdmlld0JveD0iMCAwIDQwMCAyNTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMjUwIiBmaWxsPSIjRjVGNUY1Ii8+CjxjaXJjbGUgY3g9IjIwMCIgY3k9IjEyNSIgcj0iODAiIGZpbGw9IiNEOUQ5RDkiLz4KPHN2ZyB4PSIxNjAiIHk9Ijg1IiB3aWR0aD0iODAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzk5OTk5OSI+CjxwYXRoIGQ9Ik0xOSA3SDVjLTEuMSAwLTIgLjktMiAyVjE5YzAgMS4xLjkgMiAyIDJoMTRjMS4xIDAgMi0uOSAyLTJWOWMwLTEuMS0uOS0yLTItMnoiLz4KPHBhdGggZD0iTTkgMTJIMTVWMTZIOVYxMloiLz4KPHBhdGggZD0iTTE3IDEySDIxVjE2SDE3VjEyWiIvPgo8cGF0aCBkPSJNOSAxOEgxNVYyMkg5VjE4WiIvPgo8cGF0aCBkPSJNMTcgMThIMjFWMjJIMTdWMThaIi8+CjxwYXRoIGQ9Ik0xMyAxMEgxMVYxNEgxM1YxMFoiLz4KPHBhdGggZD0iTTE5IDEwSDE3VjE0SDE5VjEwWiIvPgo8cGF0aCBkPSJNMTMgMTZIMTFWMjBIMTNWMTZaIi8+CjxwYXRoIGQ9Ik0xOSAxNkgxN1YyMEgxOVYxNloiLz4KPC9zdmc+Cjx0ZXh0IHg9IjIwMCIgeT0iMTQwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM5OTk5OTkiIHRleHQtYW5jaG9yPSJtaWRkbGUiPk5vIEltYWdlPC90ZXh0Pgo8L3N2Zz4K';
   }
 
   // Search offers by title or description

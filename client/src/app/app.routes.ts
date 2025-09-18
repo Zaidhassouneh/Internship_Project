@@ -8,6 +8,7 @@ import { LandOfferDetailsComponent } from '../features/landOffer/land-offer-deta
 import { FarmerOfferComponent } from '../features/farmerOffer/farmer-offer.component';
 import { FarmerOfferDetailsComponent } from '../features/farmerOffer/farmer-offer-details.component';
 import { EquipmentOfferComponent } from '../features/equipmentOffer/equipment-offer.component';
+import { EquipmentOfferDetailsComponent } from '../features/equipmentOffer/equipment-offer-details.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -17,6 +18,7 @@ export const routes: Routes = [
   { path: 'farmerOffer', component: FarmerOfferComponent, canActivate: [authGuard] },
   { path: 'farmerOffer/:id', component: FarmerOfferDetailsComponent, canActivate: [authGuard] },
   { path: 'equipmentOffer', component: EquipmentOfferComponent, canActivate: [authGuard] },
+  { path: 'equipmentOffer/:id', component: EquipmentOfferDetailsComponent, canActivate: [authGuard] },
   { path: 'home', component: HomeComponent, canActivate: [authGuard] },
   { path: '', redirectTo: 'login', pathMatch: 'full' }
 ];
