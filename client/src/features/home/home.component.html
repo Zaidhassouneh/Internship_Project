@@ -101,6 +101,16 @@
                 <option value="DeliveryOnly">Delivery Only</option>
               </select>
             </div>
+            <div class="col-4" *ngIf="selectedPeriod === 'hire'">
+              <select class="form-select" [(ngModel)]="selectedAgeRange">
+                <option *ngFor="let ageRange of ageRanges" [value]="ageRange.value">{{ageRange.label}}</option>
+              </select>
+            </div>
+            <div class="col-4" *ngIf="selectedPeriod === 'hire'">
+              <select class="form-select" [(ngModel)]="selectedEmploymentType">
+                <option *ngFor="let employmentType of employmentTypes" [value]="employmentType.value">{{employmentType.label}}</option>
+              </select>
+            </div>
           </div>
         </div>
       </div>

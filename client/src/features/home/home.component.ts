@@ -33,6 +33,8 @@ export class HomeComponent implements OnInit {
   landSpaceFilter = '';
   selectedCondition = '';
   selectedDeliveryType = '';
+  selectedAgeRange = '';
+  selectedEmploymentType = '';
   filtersApplied = false;
   
   // Available cities for filtering
@@ -48,6 +50,23 @@ export class HomeComponent implements OnInit {
     'Karak',
     'Tafilah',
     'Aqaba'
+  ];
+
+  // Age range options for farmer offers
+  ageRanges = [
+    { value: '', label: 'All Ages' },
+    { value: '18-25', label: '18-25 years' },
+    { value: '26-35', label: '26-35 years' },
+    { value: '36-45', label: '36-45 years' },
+    { value: '46-55', label: '46-55 years' },
+    { value: '55+', label: '55+ years' }
+  ];
+
+  // Employment type options for farmer offers
+  employmentTypes = [
+    { value: '', label: 'All Employment Types' },
+    { value: '0', label: 'Part-Time' },
+    { value: '1', label: 'Full-Time' }
   ];
 
   constructor(
@@ -283,6 +302,18 @@ export class HomeComponent implements OnInit {
     if (this.selectedPeriod === 'hire' || !this.selectedPeriod || this.selectedPeriod === '') {
       this.landSpaceFilter = '';
     }
+    
+    // Clear farmer-specific filters when switching away from "Hire a Farmer"
+    if (this.selectedPeriod !== 'hire') {
+      this.selectedAgeRange = '';
+      this.selectedEmploymentType = '';
+    }
+    
+    // Clear equipment-specific filters when switching away from "equipment"
+    if (this.selectedPeriod !== 'equipment') {
+      this.selectedCondition = '';
+      this.selectedDeliveryType = '';
+    }
   }
 
 
@@ -356,7 +387,38 @@ export class HomeComponent implements OnInit {
         matchesDeliveryType = offer.deliveryType === this.selectedDeliveryType;
       }
 
-      return matchesSearch && matchesCity && matchesPeriod && matchesLandSpace && matchesCondition && matchesDeliveryType;
+      // Farmer age range filter
+      let matchesAgeRange = true;
+      if (offer.type === 'farmer' && this.selectedAgeRange && offer.age) {
+        matchesAgeRange = this.matchesAgeRange(offer.age, this.selectedAgeRange);
+      }
+
+      // Farmer employment type filter
+      let matchesEmploymentType = true;
+      if (offer.type === 'farmer' && this.selectedEmploymentType !== '') {
+        const employmentTypeValue = parseInt(this.selectedEmploymentType);
+        console.log('Filtering employment type:', {
+          selectedValue: this.selectedEmploymentType,
+          parsedValue: employmentTypeValue,
+          offerEmploymentType: offer.employmentType,
+          offerType: typeof offer.employmentType,
+          matches: offer.employmentType === employmentTypeValue
+        });
+        
+        // Handle both string and number types from API
+        if (typeof offer.employmentType === 'string') {
+          const offerTypeStr = offer.employmentType.toLowerCase();
+          if (employmentTypeValue === 0) {
+            matchesEmploymentType = offerTypeStr === 'parttime' || offerTypeStr === 'part-time' || offerTypeStr === '0';
+          } else if (employmentTypeValue === 1) {
+            matchesEmploymentType = offerTypeStr === 'fulltime' || offerTypeStr === 'full-time' || offerTypeStr === '1';
+          }
+        } else {
+          matchesEmploymentType = offer.employmentType === employmentTypeValue;
+        }
+      }
+
+      return matchesSearch && matchesCity && matchesPeriod && matchesLandSpace && matchesCondition && matchesDeliveryType && matchesAgeRange && matchesEmploymentType;
     });
   }
 
@@ -368,6 +430,8 @@ export class HomeComponent implements OnInit {
     this.landSpaceFilter = '';
     this.selectedCondition = '';
     this.selectedDeliveryType = '';
+    this.selectedAgeRange = '';
+    this.selectedEmploymentType = '';
     this.showAllOffers();
   }
 
@@ -437,6 +501,26 @@ export class HomeComponent implements OnInit {
     
     // Check if the land size falls within the range
     return landSize >= minRange && landSize <= maxRange;
+  }
+
+  // Check if age matches the selected age range
+  private matchesAgeRange(age: number, ageRange: string): boolean {
+    if (!ageRange) return true;
+    
+    switch (ageRange) {
+      case '18-25':
+        return age >= 18 && age <= 25;
+      case '26-35':
+        return age >= 26 && age <= 35;
+      case '36-45':
+        return age >= 36 && age <= 45;
+      case '46-55':
+        return age >= 46 && age <= 55;
+      case '55+':
+        return age >= 55;
+      default:
+        return true;
+    }
   }
 
 }
