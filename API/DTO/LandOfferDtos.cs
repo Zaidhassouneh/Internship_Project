@@ -39,6 +39,9 @@ public class LandOfferDto
 {
     public int Id { get; set; }
     public string OwnerId { get; set; } = default!;
+    public string OwnerName { get; set; } = default!;
+    public string? OwnerProfileImageUrl { get; set; }
+    public DateTime OwnerMemberSince { get; set; }
     public string Title { get; set; } = default!;
     public string? Description { get; set; }
     public string Location { get; set; } = default!;

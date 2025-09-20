@@ -45,6 +45,9 @@ public class FarmerOfferDto
 {
     public int Id { get; set; }
     public string OwnerId { get; set; } = default!;
+    public string OwnerName { get; set; } = default!;
+    public string? OwnerProfileImageUrl { get; set; }
+    public DateTime OwnerMemberSince { get; set; }
     
     // Required fields
     public string FullName { get; set; } = default!;

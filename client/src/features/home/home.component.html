@@ -142,6 +142,16 @@
            [class.farmer-offer-card]="offer.type === 'farmer'"
            [class.equipment-offer-card]="offer.type === 'equipment'"
            (click)="navigateToOffer(offer)">
+        
+        <!-- Offer Type Badge -->
+        <div class="offer-type-badge">
+          <span *ngIf="offer.type === 'land'">
+            {{ offer.isForRent ? 'Rent Land' : 'Buy Land' }}
+          </span>
+          <span *ngIf="offer.type === 'farmer'">Farmer</span>
+          <span *ngIf="offer.type === 'equipment'">Equipment</span>
+        </div>
+        
         <div class="row g-0">
           <div class="col-md-4">
             <div class="offer-image">
@@ -193,6 +203,10 @@
                 <button class="btn btn-outline-primary btn-sm rounded-circle" title="Favorite" (click)="$event.stopPropagation()">
                   <i class="bi bi-heart"></i>
                 </button>
+                <div class="offer-date">
+                  <i class="bi bi-calendar3"></i>
+                  {{ formatDate(offer.publishedDate) }}
+                </div>
               </div>
             </div>
           </div>

@@ -58,7 +58,18 @@
       <div class="equipment-details-container">
         <!-- Title and Price -->
         <div class="title-price-row">
-          <h1 class="equipment-title">{{ offer.title }}</h1>
+          <div class="title-section">
+            <h1 class="equipment-title">{{ offer.title }}</h1>
+            <div class="offer-date-info">
+              <span class="offer-date">
+                <i class="bi bi-calendar3"></i>
+                Posted {{ formatDate(offer.createdAt) }}
+              </span>
+              <span class="offer-detailed-date">
+                {{ formatDetailedDate(offer.createdAt) }}
+              </span>
+            </div>
+          </div>
           <div class="price-badge">
             {{ offer.price }} JOD
           </div>
@@ -117,6 +128,24 @@
         <div class="availability-section">
           <div class="availability-badge" [class]="offer.isAvailable ? 'available' : 'unavailable'">
             {{ offer.isAvailable ? 'Available' : 'Not Available' }}
+          </div>
+        </div>
+
+        <!-- Listing Owner Section -->
+        <div class="listing-owner-section">
+          <h3 class="listing-owner-title">Listing Owner</h3>
+          <div class="listing-owner" (click)="goToOwnerProfile(offer.ownerId)">
+            <div class="owner-profile-image">
+              <img *ngIf="offer.ownerProfileImageUrl" 
+                   [src]="offer.ownerProfileImageUrl" 
+                   [alt]="offer.ownerName + ' profile'"
+                   class="profile-img">
+              <i *ngIf="!offer.ownerProfileImageUrl" class="bi bi-person-circle profile-icon"></i>
+            </div>
+            <div class="owner-details">
+              <div class="owner-name">{{ offer.ownerName }}</div>
+              <div class="member-since">Member Since {{ formatMemberSince(offer.ownerMemberSince) }}</div>
+            </div>
           </div>
         </div>
 

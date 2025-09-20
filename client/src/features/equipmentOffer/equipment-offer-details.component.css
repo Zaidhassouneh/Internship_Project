@@ -37,6 +37,14 @@
   gap: 1rem;
 }
 
+/* Title Section */
+.title-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 /* Equipment Title */
 .equipment-title {
   color: #212529;
@@ -44,7 +52,31 @@
   font-size: 1.8rem;
   margin: 0;
   line-height: 1.3;
-  flex: 1;
+}
+
+.offer-date-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.offer-date {
+  color: #6c757d;
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.offer-date i {
+  font-size: 0.8rem;
+}
+
+.offer-detailed-date {
+  color: #adb5bd;
+  font-size: 0.8rem;
+  font-style: italic;
 }
 
 /* Price Badge */
@@ -158,6 +190,74 @@
   color: white;
 }
 
+/* Listing Owner Section */
+.listing-owner-section {
+  margin: 24px 0;
+}
+
+.listing-owner-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+.listing-owner {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid #e9ecef;
+}
+
+.listing-owner:hover {
+  background: #e9ecef;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.owner-profile-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #dee2e6;
+}
+
+.profile-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-icon {
+  font-size: 24px;
+  color: #6c757d;
+}
+
+.owner-details {
+  flex: 1;
+}
+
+.owner-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #28a745;
+  margin-bottom: 4px;
+}
+
+.member-since {
+  font-size: 14px;
+  color: #6c757d;
+}
+
 /* Action Buttons */
 .action-buttons {
   display: flex;
@@ -171,9 +271,9 @@
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  border: 2px solid #007bff;
+  border: 2px solid #28a745;
   background: white;
-  color: #007bff;
+  color: #28a745;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -184,9 +284,10 @@
 }
 
 .action-btn:hover {
-  background: #007bff;
+  background: #28a745;
   color: white;
   transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
 }
 
 .action-btn:disabled {
@@ -196,7 +297,7 @@
 
 .action-btn:disabled:hover {
   background: white;
-  color: #007bff;
+  color: #28a745;
   transform: none;
 }
 

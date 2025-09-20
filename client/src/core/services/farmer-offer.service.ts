@@ -11,6 +11,9 @@ export enum EmploymentType {
 export interface FarmerOfferDto {
   id: number;
   ownerId: string;
+  ownerName: string;
+  ownerProfileImageUrl?: string;
+  ownerMemberSince: string;
   fullName: string;
   contactNumber: string;
   currentAddress: string;

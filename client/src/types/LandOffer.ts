@@ -11,9 +11,12 @@ leaseDuration?: number | null;
 contactNumber: string;
 }
 export interface LandOfferDto {
-id: number;
-ownerId: string;
-title: string;
+  id: number;
+  ownerId: string;
+  ownerName: string;
+  ownerProfileImageUrl?: string;
+  ownerMemberSince: string;
+  title: string;
 description?: string;
 location: string;
 price: number;

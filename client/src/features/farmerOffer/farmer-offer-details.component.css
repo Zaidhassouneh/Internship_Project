@@ -196,13 +196,44 @@
   gap: 15px;
 }
 
+.title-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 .farmer-title {
   font-size: 1.8rem;
   font-weight: 600;
   color: #2c3e50;
   margin: 0;
-  flex: 1;
   line-height: 1.2;
+}
+
+.offer-date-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.offer-date {
+  color: #6c757d;
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.offer-date i {
+  font-size: 0.8rem;
+}
+
+.offer-detailed-date {
+  color: #adb5bd;
+  font-size: 0.8rem;
+  font-style: italic;
 }
 
 .status-badge {
@@ -314,6 +345,74 @@
   font-size: 0.9rem;
 }
 
+/* Listing Owner Section */
+.listing-owner-section {
+  margin: 24px 0;
+}
+
+.listing-owner-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+.listing-owner {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid #e9ecef;
+}
+
+.listing-owner:hover {
+  background: #e9ecef;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.owner-profile-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #dee2e6;
+}
+
+.profile-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-icon {
+  font-size: 24px;
+  color: #6c757d;
+}
+
+.owner-details {
+  flex: 1;
+}
+
+.owner-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #28a745;
+  margin-bottom: 4px;
+}
+
+.member-since {
+  font-size: 14px;
+  color: #6c757d;
+}
+
 /* Action Buttons */
 .action-buttons {
   display: flex;
@@ -327,21 +426,27 @@
   justify-content: center;
 }
 
-.btn-outline-primary {
-  border-color: #007bff;
-  color: #007bff;
+.action-icon-btn {
+  border-color: #28a745;
+  color: #28a745;
   width: 40px;
   height: 40px;
   padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 50%;
+  background: white;
+  border: 2px solid #28a745;
+  transition: all 0.3s ease;
 }
 
-.btn-outline-primary:hover {
-  background-color: #007bff;
-  border-color: #007bff;
+.action-icon-btn:hover {
+  background-color: #28a745;
+  border-color: #28a745;
   color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
 }
 
 .hire-button {

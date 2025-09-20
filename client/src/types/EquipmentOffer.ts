@@ -36,6 +36,9 @@ export interface EquipmentOfferPhotoDto {
 export interface EquipmentOfferDto {
   id: number;
   ownerId: string;
+  ownerName: string;
+  ownerProfileImageUrl?: string;
+  ownerMemberSince: string;
   title: string;
   description?: string;
   price: number;

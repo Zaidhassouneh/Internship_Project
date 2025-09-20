@@ -20,6 +20,7 @@ public class EquipmentOffersController(AppDbContext db, IFileStorage storage) : 
         var q = db.EquipmentOffers
             .AsNoTracking()
             .Include(o => o.Photos)
+            .Include(o => o.Owner)
             .OrderByDescending(o => o.CreatedAt)
             .AsQueryable();
 
@@ -34,7 +35,7 @@ public class EquipmentOffersController(AppDbContext db, IFileStorage storage) : 
     [HttpGet("{id:int}")]
     public async Task<ActionResult<EquipmentOfferDto>> GetOffer(int id)
     {
-        var offer = await db.EquipmentOffers.Include(o => o.Photos).FirstOrDefaultAsync(o => o.Id == id);
+        var offer = await db.EquipmentOffers.Include(o => o.Photos).Include(o => o.Owner).FirstOrDefaultAsync(o => o.Id == id);
         if (offer == null) return NotFound();
         return MapToDto(offer);
     }
@@ -152,6 +153,9 @@ public class EquipmentOffersController(AppDbContext db, IFileStorage storage) : 
     {
         Id = o.Id,
         OwnerId = o.OwnerId,
+        OwnerName = o.Owner?.DisplayName ?? "Unknown",
+        OwnerProfileImageUrl = o.Owner?.ProfileImageUrl,
+        OwnerMemberSince = o.Owner?.CreatedAt ?? DateTime.MinValue,
         Title = o.Title,
         Description = o.Description,
         Price = o.Price,

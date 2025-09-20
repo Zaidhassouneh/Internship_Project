@@ -119,4 +119,68 @@ export class LandOfferDetailsComponent implements OnInit {
   goBack() {
     this.router.navigate(['/home']);
   }
+
+  // Format date for display
+  formatDate(date: Date | string): string {
+    if (!date) return '';
+    
+    const dateObj = typeof date === 'string' ? new Date(date) : date;
+    
+    if (isNaN(dateObj.getTime())) return '';
+    
+    const now = new Date();
+    const diffTime = Math.abs(now.getTime() - dateObj.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    if (diffDays === 0) {
+      return 'Today';
+    } else if (diffDays === 1) {
+      return 'Yesterday';
+    } else if (diffDays < 7) {
+      return `${diffDays} days ago`;
+    } else if (diffDays < 30) {
+      const weeks = Math.floor(diffDays / 7);
+      return weeks === 1 ? '1 week ago' : `${weeks} weeks ago`;
+    } else if (diffDays < 365) {
+      const months = Math.floor(diffDays / 30);
+      return months === 1 ? '1 month ago' : `${months} months ago`;
+    } else {
+      const years = Math.floor(diffDays / 365);
+      return years === 1 ? '1 year ago' : `${years} years ago`;
+    }
+  }
+
+  // Format date for detailed display (full date)
+  formatDetailedDate(date: Date | string): string {
+    if (!date) return '';
+    
+    const dateObj = typeof date === 'string' ? new Date(date) : date;
+    
+    if (isNaN(dateObj.getTime())) return '';
+    
+    return dateObj.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  }
+
+  formatMemberSince(date: Date | string): string {
+    if (!date) return '';
+    
+    const dateObj = typeof date === 'string' ? new Date(date) : date;
+    
+    if (isNaN(dateObj.getTime())) return '';
+    
+    return dateObj.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    });
+  }
+
+  goToOwnerProfile(ownerId: string) {
+    // TODO: Navigate to owner profile page
+    console.log('Navigate to owner profile:', ownerId);
+  }
 }

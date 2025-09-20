@@ -19,6 +19,7 @@ public class LandOffersController(AppDbContext db, IFileStorage storage) : Contr
         var q = db.LandOffers
             .AsNoTracking()
             .Include(o => o.Photos)
+            .Include(o => o.Owner)
             .OrderByDescending(o => o.CreatedAt)
             .AsQueryable();
 
@@ -33,7 +34,7 @@ public class LandOffersController(AppDbContext db, IFileStorage storage) : Contr
     [HttpGet("{id:int}")]
     public async Task<ActionResult<LandOfferDto>> GetOffer(int id)
     {
-        var offer = await db.LandOffers.Include(o => o.Photos).FirstOrDefaultAsync(o => o.Id == id);
+        var offer = await db.LandOffers.Include(o => o.Photos).Include(o => o.Owner).FirstOrDefaultAsync(o => o.Id == id);
         if (offer == null) return NotFound();
         return MapToDto(offer);
     }
@@ -153,6 +154,9 @@ public class LandOffersController(AppDbContext db, IFileStorage storage) : Contr
     {
         Id = o.Id,
         OwnerId = o.OwnerId,
+        OwnerName = o.Owner?.DisplayName ?? "Unknown",
+        OwnerProfileImageUrl = o.Owner?.ProfileImageUrl,
+        OwnerMemberSince = o.Owner?.CreatedAt ?? DateTime.MinValue,
         Title = o.Title,
         Description = o.Description,
         Location = o.Location,
