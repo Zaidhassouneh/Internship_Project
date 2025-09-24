@@ -21,7 +21,19 @@ export class HeaderComponent {
     this.isSidebarOpen = false;
   }
 
- logout(): void {
+  navigateToProfile(): void {
+    this.closeSidebar();
+    // TODO: Navigate to profile page when implemented
+    console.log('Navigate to profile');
+  }
+
+  navigateToChats(): void {
+    this.closeSidebar();
+    // TODO: Navigate to chats page when implemented
+    console.log('Navigate to chats');
+  }
+
+  logout(): void {
     localStorage.removeItem('token'); // ✅ remove saved token
     this.closeSidebar(); // close sidebar
     this.router.navigate(['/login']); // redirect to login page

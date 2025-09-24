@@ -1,0 +1,112 @@
+<app-header></app-header>
+
+<!-- Contact Section -->
+<section class="contact-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 text-center mb-5">
+        <h1 class="page-title">Contact Us</h1>
+      </div>
+    </div>
+    
+    <div class="row g-5">
+      <!-- Get in Touch Section -->
+      <div class="col-lg-6">
+        <div class="contact-info">
+          <h2 class="section-title">Get in Touch</h2>
+          <p class="section-description">
+            We'd love to hear from you. Please use any of the following methods to reach us:
+          </p>
+          
+          <div class="contact-methods">
+            <div class="contact-method">
+              <div class="contact-icon">
+                <i class="bi bi-envelope-fill"></i>
+              </div>
+              <div class="contact-details">
+                <h4>Email</h4>
+                <p>Zaidhassouneh256&#64;hotmail.com</p>
+              </div>
+            </div>
+            
+            <div class="contact-method">
+              <div class="contact-icon">
+                <i class="bi bi-telephone-fill"></i>
+              </div>
+              <div class="contact-details">
+                <h4>Phone</h4>
+                <p>+962 79 955 421</p>
+              </div>
+            </div>
+            
+            <div class="contact-method">
+              <div class="contact-icon whatsapp">
+                <i class="bi bi-whatsapp"></i>
+              </div>
+              <div class="contact-details">
+                <h4>WhatsApp</h4>
+                <p>+962 79 955 421</p>
+              </div>
+            </div>
+            
+            <div class="contact-method">
+              <div class="contact-icon">
+                <i class="bi bi-geo-alt-fill"></i>
+              </div>
+              <div class="contact-details">
+                <h4>Address</h4>
+                <p>Jordan, Irbid</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Contact Form Section -->
+      <div class="col-lg-6">
+        <div class="contact-form-container">
+          <h2 class="section-title">Send us a Message</h2>
+          
+          <form (ngSubmit)="onSubmit()" #contactFormRef="ngForm">
+            <div class="form-group">
+              <label for="subject">Subject</label>
+              <input 
+                type="text" 
+                id="subject" 
+                name="subject" 
+                [(ngModel)]="contactForm.subject" 
+                required 
+                class="form-control"
+                placeholder="What's this about?">
+            </div>
+            
+            <div class="form-group">
+              <label for="message">Message</label>
+              <textarea 
+                id="message" 
+                name="message" 
+                [(ngModel)]="contactForm.message" 
+                required 
+                rows="5" 
+                class="form-control"
+                placeholder="Tell us more about your inquiry..."></textarea>
+            </div>
+            
+            <button 
+              type="submit" 
+              class="btn-submit" 
+              [disabled]="isSubmitting || contactFormRef.invalid">
+              {{ isSubmitting ? 'Sending...' : 'Send Message' }}
+            </button>
+            
+            <div *ngIf="submitMessage" class="submit-message">
+              {{ submitMessage }}
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<app-footer></app-footer>

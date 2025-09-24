@@ -177,13 +177,6 @@ export class HomeComponent implements OnInit {
     // No need to extract from offers
   }
 
-  // Scroll to offers section when "Rent Land" is clicked
-  scrollToOffers() {
-    const offersSection = document.getElementById('offers');
-    if (offersSection) {
-      offersSection.scrollIntoView({ behavior: 'smooth' });
-    }
-  }
 
   // Navigate to land offer creation page
   navigateToOfferLand() {

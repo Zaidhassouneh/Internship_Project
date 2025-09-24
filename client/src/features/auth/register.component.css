@@ -1,32 +1,125 @@
-form {
-  max-width: 350px;
-  margin: 2rem auto;
-  padding: 2rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background: #fff;
+/* Background and container */
+:host {
+  display: flex;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #28a745 0%, #20c997 50%, #17a2b8 100%);
+  padding: 1rem;
 }
+
+form {
+  max-width: 400px;
+  width: 100%;
+  padding: 2.5rem;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #2c3e50;
+  font-size: 2rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #28a745, #20c997);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 label {
   display: block;
   margin-bottom: 0.5rem;
+  color: #495057;
+  font-weight: 600;
+  font-size: 0.9rem;
 }
+
 input {
   width: 100%;
-  padding: 0.5rem;
-  margin-bottom: 1rem;
-  border-radius: 4px;
-  border: 1px solid #ccc;
+  padding: 0.875rem 1rem;
+  margin-bottom: 1.25rem;
+  border-radius: 12px;
+  border: 2px solid #e9ecef;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: #fff;
+  box-sizing: border-box;
 }
+
+input:focus {
+  outline: none;
+  border-color: #28a745;
+  box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
+  transform: translateY(-1px);
+}
+
+input:hover {
+  border-color: #28a745;
+}
+
 button {
   width: 100%;
-  padding: 0.75rem;
-  background: #28a745;
+  padding: 1rem;
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
   color: #fff;
   border: none;
-  border-radius: 4px;
-  font-size: 1rem;
-}
-.error {
-  color: #d9534f;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
   margin-bottom: 1rem;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(40, 167, 69, 0.3);
+  background: linear-gradient(135deg, #218838 0%, #1ea085 100%);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+.error {
+  color: #dc3545;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background: rgba(220, 53, 69, 0.1);
+  border-radius: 8px;
+  border-left: 4px solid #dc3545;
+  font-size: 0.9rem;
+}
+
+.login-link {
+  text-align: center;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e9ecef;
+}
+
+.login-link span {
+  color: #6c757d;
+  font-size: 0.95rem;
+}
+
+.login-link-text {
+  color: #28a745;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+}
+
+.login-link-text:hover {
+  color: #218838;
+  text-decoration: underline;
+  transform: translateY(-1px);
 }
