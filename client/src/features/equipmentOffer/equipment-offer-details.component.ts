@@ -179,7 +179,32 @@ export class EquipmentOfferDetailsComponent implements OnInit {
   }
 
   goToOwnerProfile(ownerId: string) {
-    // TODO: Navigate to owner profile page
-    console.log('Navigate to owner profile:', ownerId);
+    // Pass owner information through query parameters
+    this.router.navigate(['/profile', ownerId], {
+      queryParams: {
+        name: this.offer?.ownerName,
+        memberSince: this.offer?.ownerMemberSince,
+        profileImage: this.offer?.ownerProfileImageUrl
+      }
+    });
+  }
+
+  buyEquipment() {
+    if (!this.offer) return;
+    
+    // TODO: Implement actual purchase logic
+    // This could include:
+    // 1. Creating a purchase order
+    // 2. Redirecting to payment page
+    // 3. Sending notification to seller
+    // 4. Updating equipment availability
+    
+    console.log('Equipment purchase initiated:', {
+      equipmentId: this.offer.id,
+      title: this.offer.title,
+      price: this.offer.price,
+      sellerId: this.offer.ownerId,
+      sellerName: this.offer.ownerName
+    });
   }
 }

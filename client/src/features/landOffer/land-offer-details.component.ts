@@ -180,7 +180,13 @@ export class LandOfferDetailsComponent implements OnInit {
   }
 
   goToOwnerProfile(ownerId: string) {
-    // TODO: Navigate to owner profile page
-    console.log('Navigate to owner profile:', ownerId);
+    // Pass owner information through query parameters
+    this.router.navigate(['/profile', ownerId], {
+      queryParams: {
+        name: this.offer?.ownerName,
+        memberSince: this.offer?.ownerMemberSince,
+        profileImage: this.offer?.ownerProfileImageUrl
+      }
+    });
   }
 }

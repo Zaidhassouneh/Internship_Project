@@ -185,14 +185,30 @@
 .availability-section {
   text-align: center;
   margin-bottom: 2rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.availability-section::before,
+.availability-section::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background-color: #dee2e6;
+  margin: 0 1rem;
 }
 
 .availability-badge {
-  display: inline-block;
-  font-size: 0.9rem;
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  position: relative;
+  font-size: 1rem;
 }
 
 .availability-badge.available {
@@ -203,6 +219,36 @@
 .availability-badge.unavailable {
   background: #dc3545;
   color: white;
+}
+
+.availability-badge i:first-child {
+  font-size: 1.2rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.availability-badge i:last-child {
+  font-size: 0.6rem;
+  position: absolute;
+  bottom: 1px;
+  right: 1px;
+  background: white;
+  border-radius: 50%;
+  width: 14px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.availability-badge.available i:last-child {
+  color: #28a745;
+}
+
+.availability-badge.unavailable i:last-child {
+  color: #dc3545;
 }
 
 /* Listing Owner Section */
@@ -268,9 +314,58 @@
   margin-bottom: 4px;
 }
 
+.owner-name.clickable {
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.owner-name.clickable:hover {
+  color: #218838;
+  text-decoration: underline;
+}
+
 .member-since {
   font-size: 14px;
   color: #6c757d;
+}
+
+/* Buy Equipment Section */
+.buy-equipment-section {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.btn-buy-equipment {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 200px;
+  justify-content: center;
+}
+
+.btn-buy-equipment:hover {
+  background: linear-gradient(135deg, #218838 0%, #1ea085 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+}
+
+.btn-buy-equipment:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(40, 167, 69, 0.3);
+}
+
+.btn-buy-equipment i {
+  font-size: 1.2rem;
 }
 
 /* Action Buttons */
@@ -451,6 +546,32 @@
     align-self: flex-start;
     font-size: 1rem;
     padding: 0.4rem 1rem;
+  }
+  
+  .btn-buy-equipment {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    min-width: 180px;
+  }
+  
+  .availability-section::before,
+  .availability-section::after {
+    margin: 0 0.5rem;
+  }
+  
+  .availability-badge {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .availability-badge i:first-child {
+    font-size: 1rem;
+  }
+  
+  .availability-badge i:last-child {
+    font-size: 0.5rem;
+    width: 12px;
+    height: 12px;
   }
   
   .action-buttons {

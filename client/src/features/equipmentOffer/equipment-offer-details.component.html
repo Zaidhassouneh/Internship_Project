@@ -127,7 +127,9 @@
         <!-- Availability Status -->
         <div class="availability-section">
           <div class="availability-badge" [class]="offer.isAvailable ? 'available' : 'unavailable'">
-            {{ offer.isAvailable ? 'Available' : 'Not Available' }}
+            <i class="bi bi-gear-fill"></i>
+            <i class="bi bi-check-circle-fill" *ngIf="offer.isAvailable"></i>
+            <i class="bi bi-x-circle-fill" *ngIf="!offer.isAvailable"></i>
           </div>
         </div>
 
@@ -143,11 +145,13 @@
               <i *ngIf="!offer.ownerProfileImageUrl" class="bi bi-person-circle profile-icon"></i>
             </div>
             <div class="owner-details">
-              <div class="owner-name">{{ offer.ownerName }}</div>
+              <div class="owner-name clickable">{{ offer.ownerName }}</div>
               <div class="member-since">Member Since {{ formatMemberSince(offer.ownerMemberSince) }}</div>
             </div>
           </div>
         </div>
+
+       
 
         <!-- Action Buttons -->
         <div class="action-buttons">
@@ -158,6 +162,14 @@
             <i class="bi bi-heart"></i>
           </button>
         </div>
+
+ <!-- Buy Equipment Button -->
+ <div class="buy-equipment-section" *ngIf="offer.isAvailable">
+  <button class="btn-buy-equipment" (click)="buyEquipment()">
+    <i class="bi bi-cart-check"></i>
+    Buy Equipment
+  </button>
+</div>
 
       </div>
     </div>

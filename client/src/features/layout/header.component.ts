@@ -21,11 +21,6 @@ export class HeaderComponent {
     this.isSidebarOpen = false;
   }
 
-  navigateToProfile(): void {
-    this.closeSidebar();
-    // TODO: Navigate to profile page when implemented
-    console.log('Navigate to profile');
-  }
 
   navigateToChats(): void {
     this.closeSidebar();

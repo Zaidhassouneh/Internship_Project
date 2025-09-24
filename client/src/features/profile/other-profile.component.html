@@ -1,0 +1,57 @@
+<app-header></app-header>
+
+<div class="container mt-4" *ngIf="!loading && !error && user">
+  <!-- Back Button -->
+  <div class="mb-3">
+    <button class="btn btn-outline-secondary" (click)="goBack()">
+      <i class="bi bi-arrow-left"></i> Back to Offers
+    </button>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      
+      <!-- Profile Card -->
+      <div class="profile-card">
+        <div class="profile-content">
+          <!-- Profile Picture -->
+          <div class="profile-avatar">
+            <img *ngIf="user.profileImageUrl" [src]="user.profileImageUrl" [alt]="user.displayName" class="profile-img">
+            <i *ngIf="!user.profileImageUrl" class="bi bi-person-circle profile-icon"></i>
+          </div>
+          
+          <!-- Profile Info -->
+          <div class="profile-info">
+            <h1 class="profile-name">{{ user.displayName }}</h1>
+            <p class="member-since">Member since {{ formatMemberSince(user.memberSince) }}</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
+<!-- Loading State -->
+<div class="container mt-4" *ngIf="loading">
+  <div class="text-center">
+    <div class="spinner-border text-success" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-2">Loading profile...</p>
+  </div>
+</div>
+
+<!-- Error State -->
+<div class="container mt-4" *ngIf="error">
+  <div class="alert alert-danger text-center">
+    <h4>Profile Not Found</h4>
+    <p>Sorry, we couldn't find the profile you're looking for.</p>
+    <button class="btn btn-outline-danger" (click)="goBack()">
+      <i class="bi bi-arrow-left"></i> Back to Offers
+    </button>
+  </div>
+</div>
+
+<app-footer></app-footer>
