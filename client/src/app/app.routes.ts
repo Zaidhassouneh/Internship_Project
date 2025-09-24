@@ -4,6 +4,8 @@ import { RegisterComponent } from '../features/auth/register.component';
 import { HomeComponent } from '../features/home/home.component';
 import { AboutComponent } from '../features/about/about.component';
 import { ContactComponent } from '../features/contact/contact.component';
+import { TermsComponent } from '../features/terms/terms.component';
+import { PrivacyComponent } from '../features/privacy/privacy.component';
 import { authGuard } from '../core/guards/auth.guard';
 import { LandOfferComponent } from '../features/landOffer/Land-offer.component';
 import { LandOfferDetailsComponent } from '../features/landOffer/land-offer-details.component';
@@ -17,6 +19,8 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'about', component: AboutComponent },
   { path: 'contact', component: ContactComponent },
+  { path: 'terms', component: TermsComponent },
+  { path: 'privacy', component: PrivacyComponent },
   { path: 'landOffer', component: LandOfferComponent, canActivate: [authGuard] },
   { path: 'landOffer/:id', component: LandOfferDetailsComponent, canActivate: [authGuard] },
   { path: 'farmerOffer', component: FarmerOfferComponent, canActivate: [authGuard] },
