@@ -30,7 +30,7 @@ export class LandOfferComponent {
     this.offerForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(3)]],
       location: ['', Validators.required],
-      description: ['', [Validators.maxLength(500)]],
+      description: ['', [Validators.maxLength(250)]],
       price: [0, [Validators.required, Validators.min(1)]],
       landSize: [null, [Validators.required, Validators.min(10)]],
       isForRent: [true],

@@ -39,7 +39,7 @@ export class FarmerOfferComponent implements OnInit {
       fullName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
       contactNumber: ['', [Validators.required, Validators.pattern(/^[\+]?[0-9\s\-\(\)]{10,15}$/)]],
       currentAddress: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(200)]],
-      description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(1000)]],
+      description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(250)]],
       employmentType: ['', [Validators.required]],
       age: [null, [Validators.min(18), Validators.max(100)]]
     });

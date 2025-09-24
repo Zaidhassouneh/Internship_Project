@@ -1,1 +1,14 @@
 @charset "UTF-8";
+
+/* Global text overflow prevention */
+* {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Force breaking of extremely long unbroken strings */
+p, span, div, h1, h2, h3, h4, h5, h6 {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  max-width: 100%;
+}

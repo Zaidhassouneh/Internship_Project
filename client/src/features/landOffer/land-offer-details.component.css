@@ -207,6 +207,9 @@
   color: #2c3e50;
   margin: 0;
   line-height: 1.2;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
 .offer-date-info {
@@ -299,6 +302,8 @@
 /* Description Section */
 .description-section {
   margin-bottom: 25px;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .section-title {
@@ -312,6 +317,16 @@
   color: #6c757d;
   line-height: 1.6;
   margin: 0;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-all;
+  hyphens: auto;
+  white-space: pre-wrap;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  /* Force breaking of long unbroken strings */
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 /* Separator */

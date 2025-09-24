@@ -65,11 +65,14 @@
         <!-- Description -->
         <div class="mb-3">
           <label class="form-label">Description</label>
-          <textarea formControlName="description" class="form-control" rows="4" placeholder="Describe your farming experience, skills, and what you're looking for"></textarea>
-          <div class="text-danger" *ngIf="f['description'].touched && f['description'].invalid">
-            <small *ngIf="f['description'].errors?.['required']">Description is required.</small>
-            <small *ngIf="f['description'].errors?.['minlength']">Description must be at least 10 characters.</small>
-            <small *ngIf="f['description'].errors?.['maxlength']">Description cannot exceed 1000 characters.</small>
+          <textarea formControlName="description" class="form-control" rows="4" placeholder="Describe your farming experience, skills, and what you're looking for" maxlength="250"></textarea>
+          <div class="d-flex justify-content-between">
+            <div class="text-danger" *ngIf="f['description'].touched && f['description'].invalid">
+              <small *ngIf="f['description'].errors?.['required']">Description is required.</small>
+              <small *ngIf="f['description'].errors?.['minlength']">Description must be at least 10 characters.</small>
+              <small *ngIf="f['description'].errors?.['maxlength']">Description cannot exceed 250 characters.</small>
+            </div>
+            <small class="text-muted">{{ f['description'].value?.length || 0 }}/250</small>
           </div>
         </div>
 

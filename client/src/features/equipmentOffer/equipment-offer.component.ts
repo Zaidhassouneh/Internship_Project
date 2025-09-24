@@ -39,7 +39,7 @@ export class EquipmentOfferComponent {
       title: ['', [Validators.required, Validators.minLength(3)]],
       location: ['', Validators.required],
       condition: ['', Validators.required],
-      description: ['', [Validators.maxLength(500)]],
+      description: ['', [Validators.maxLength(250)]],
       price: [0, [Validators.required, Validators.min(1)]],
       deliveryType: ['', Validators.required],
       contactNumber: ['', [Validators.required, Validators.pattern(/^[\+]?[0-9\s\-\(\)]{7,15}$/)]]

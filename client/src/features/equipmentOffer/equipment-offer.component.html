@@ -76,9 +76,12 @@
         <!-- Description -->
         <div class="mb-3">
           <label class="form-label">Description</label>
-          <textarea formControlName="description" class="form-control" rows="3" placeholder="Provide equipment details"></textarea>
-          <div class="text-danger" *ngIf="f['description'].touched && f['description'].invalid">
-            <small *ngIf="f['description'].errors?.['maxlength']">Max 500 characters allowed.</small>
+          <textarea formControlName="description" class="form-control" rows="3" placeholder="Provide equipment details" maxlength="250"></textarea>
+          <div class="d-flex justify-content-between">
+            <div class="text-danger" *ngIf="f['description'].touched && f['description'].invalid">
+              <small *ngIf="f['description'].errors?.['maxlength']">Max 250 characters allowed.</small>
+            </div>
+            <small class="text-muted">{{ f['description'].value?.length || 0 }}/250</small>
           </div>
         </div>
 
