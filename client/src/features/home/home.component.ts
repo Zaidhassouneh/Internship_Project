@@ -24,7 +24,14 @@ export class HomeComponent implements OnInit {
   equipmentOffers: EquipmentOfferDto[] = [];
   allOffers: any[] = [];
   filteredOffers: any[] = [];
+  displayedOffers: any[] = [];
   loading = false;
+  
+  // Pagination properties
+  itemsPerPage = 6; // Show 6 offers initially
+  currentPage = 1;
+  totalPages = 1;
+  hasMoreOffers = false;
   
   // Search and filter properties
   searchTerm = '';
@@ -163,18 +170,52 @@ export class HomeComponent implements OnInit {
     // Initially show all offers (default behavior)
     this.filteredOffers = [...this.allOffers];
     this.filtersApplied = false;
+    
+    // Initialize pagination
+    this.initializePagination();
   }
 
   // Show all offers without any filtering
   showAllOffers() {
     this.filteredOffers = [...this.allOffers];
     this.filtersApplied = false;
+    this.initializePagination();
   }
 
   // Initialize cities for filtering
   initializeCities() {
     // Cities are already defined in the cities array
     // No need to extract from offers
+  }
+
+  // Initialize pagination
+  initializePagination() {
+    this.currentPage = 1;
+    this.totalPages = Math.ceil(this.filteredOffers.length / this.itemsPerPage);
+    this.hasMoreOffers = this.filteredOffers.length > this.itemsPerPage;
+    this.updateDisplayedOffers();
+  }
+
+  // Update displayed offers based on current page
+  updateDisplayedOffers() {
+    const startIndex = 0;
+    const endIndex = this.currentPage * this.itemsPerPage;
+    this.displayedOffers = this.filteredOffers.slice(startIndex, endIndex);
+  }
+
+  // Load more offers
+  loadMoreOffers() {
+    if (this.hasMoreOffers) {
+      this.currentPage++;
+      this.updateDisplayedOffers();
+      this.hasMoreOffers = this.displayedOffers.length < this.filteredOffers.length;
+    }
+  }
+
+  // Reset pagination when filters are applied
+  resetPagination() {
+    this.currentPage = 1;
+    this.initializePagination();
   }
 
 
@@ -413,6 +454,9 @@ export class HomeComponent implements OnInit {
 
       return matchesSearch && matchesCity && matchesPeriod && matchesLandSpace && matchesCondition && matchesDeliveryType && matchesAgeRange && matchesEmploymentType;
     });
+    
+    // Reset pagination after filtering
+    this.resetPagination();
   }
 
   // Clear all filters

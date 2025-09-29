@@ -127,7 +127,7 @@
       </div>
       
       <!-- Unified offers list -->
-      <div *ngFor="let offer of filteredOffers" 
+      <div *ngFor="let offer of displayedOffers" 
            class="offer-card" 
            [class.farmer-offer-card]="offer.type === 'farmer'"
            [class.equipment-offer-card]="offer.type === 'equipment'"
@@ -206,6 +206,14 @@
              [class.equipment-price]="offer.type === 'equipment'">
           {{ offer.type === 'land' ? (offer.price + ' JOD') : (offer.type === 'equipment' ? (offer.price + ' JOD') : 'Available') }}
         </div>
+      </div>
+      
+      <!-- More Button -->
+      <div *ngIf="hasMoreOffers" class="more-button-container">
+        <button class="more-button" (click)="loadMoreOffers()">
+          <i class="bi bi-arrow-down-circle me-2"></i>
+          More Offers
+        </button>
       </div>
     </div>
   </div>

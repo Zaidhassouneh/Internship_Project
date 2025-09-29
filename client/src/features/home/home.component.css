@@ -513,3 +513,57 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #218838;
 }
+
+/* More Button Styling */
+.more-button-container {
+  text-align: center;
+  margin-top: 3rem;
+  padding: 2rem 0;
+}
+
+.more-button {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  border: none;
+  color: white;
+  padding: 12px 30px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.more-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
+  background: linear-gradient(135deg, #20c997 0%, #28a745 100%);
+}
+
+.more-button:active {
+  transform: translateY(0);
+}
+
+.more-button i {
+  transition: transform 0.3s ease;
+}
+
+.more-button:hover i {
+  transform: translateY(2px);
+}
+
+.offers-count {
+  color: #6c757d;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  font-weight: 500;
+}
+
+/* Responsive More Button */
+@media (max-width: 768px) {
+  .more-button {
+    padding: 10px 25px;
+    font-size: 1rem;
+  }
+}
