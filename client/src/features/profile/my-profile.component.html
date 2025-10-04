@@ -273,6 +273,66 @@
               </div>
             </div>
           </div>
+
+          <!-- Land Offer Fields -->
+          <div *ngIf="editingOffer?.type === 'land'">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Title *</label>
+                <input type="text" class="form-control" [(ngModel)]="editForm.title" name="title" required>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Price (JOD) *</label>
+                <input type="number" class="form-control" [(ngModel)]="editForm.price" name="price" required>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Location *</label>
+                <input type="text" class="form-control" [(ngModel)]="editForm.location" name="location" required>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Contact Number</label>
+                <input type="tel" class="form-control" [(ngModel)]="editForm.contactNumber" name="contactNumber">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Land Size (acres)</label>
+                <input type="number" class="form-control" [(ngModel)]="editForm.landSize" name="landSize" step="0.1">
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" [(ngModel)]="editForm.isForRent" name="isForRent" id="isForRent">
+                  <label class="form-check-label" for="isForRent">
+                    Available for Rent
+                  </label>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3" *ngIf="editForm.isForRent">
+                <label class="form-label">Lease Duration (months)</label>
+                <input type="number" class="form-control" [(ngModel)]="editForm.leaseDuration" name="leaseDuration">
+              </div>
+              <div class="col-12 mb-3">
+                <label class="form-label">Description</label>
+                <textarea class="form-control" rows="3" [(ngModel)]="editForm.description" name="description"></textarea>
+              </div>
+              <div class="col-12 mb-3">
+                <label class="form-label">Images</label>
+                <div class="image-upload-section">
+                  <div class="current-images" *ngIf="editingOffer?.originalOffer?.photos?.length > 0">
+                    <div class="image-item" *ngFor="let photo of editingOffer.originalOffer.photos; let i = index">
+                      <img [src]="constructImageUrl(photo.url)" [alt]="'Image ' + (i + 1)" class="preview-image">
+                      <button type="button" class="btn btn-sm btn-danger remove-image-btn" (click)="removeImage(photo.id)">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="upload-area" (click)="triggerImageUpload()">
+                    <i class="bi bi-cloud-upload"></i>
+                    <p>Click to add more images</p>
+                    <input type="file" #imageInput (change)="onImageSelected($event)" multiple accept="image/*" style="display: none;">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </form>
       </div>
       <div class="modal-footer">
@@ -289,5 +349,35 @@
 
 <!-- Modal Backdrop -->
 <div class="modal-backdrop fade" [class.show]="showEditModal" *ngIf="showEditModal"></div>
+
+<!-- Confirmation Modal -->
+<div class="modal fade" [class.show]="showConfirmModal" [style.display]="showConfirmModal ? 'block' : 'none'" tabindex="-1" *ngIf="showConfirmModal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          <i class="bi bi-exclamation-triangle me-2 text-warning"></i>
+          Confirm Action
+        </h5>
+        <button type="button" class="btn-close" (click)="closeConfirmModal()"></button>
+      </div>
+      <div class="modal-body">
+        <p class="mb-0">{{ confirmMessage }}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeConfirmModal()">
+          <i class="bi bi-x-circle me-1"></i> Cancel
+        </button>
+        <button type="button" class="btn btn-danger" (click)="confirmAction()">
+          <i class="bi bi-check-circle me-1"></i> Confirm
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Confirmation Modal Backdrop -->
+<div class="modal-backdrop fade" [class.show]="showConfirmModal" *ngIf="showConfirmModal"></div>
+
 
 <app-footer></app-footer>

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpEvent, HttpRequest } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { LandOfferDto, LandOfferCreateDto, PhotoDto } from '../../types/LandOffer';
+import { LandOfferDto, LandOfferCreateDto, LandOfferUpdateDto, PhotoDto } from '../../types/LandOffer';
 
 
 @Injectable({ providedIn: 'root' })
@@ -39,5 +39,13 @@ return this.http.put(`${this.base}/landoffers/${offerId}/photos/${photoId}/main`
 
 deletePhoto(offerId: number, photoId: number) {
 return this.http.delete(`${this.base}/landoffers/${offerId}/photos/${photoId}`);
+}
+
+updateOffer(offerId: number, dto: LandOfferUpdateDto): Observable<LandOfferDto> {
+return this.http.put<LandOfferDto>(`${this.base}/landoffers/${offerId}`, dto);
+}
+
+deleteOffer(offerId: number): Observable<void> {
+return this.http.delete<void>(`${this.base}/landoffers/${offerId}`);
 }
 }

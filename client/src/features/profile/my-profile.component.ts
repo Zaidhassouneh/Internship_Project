@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { HeaderComponent } from '../layout/header.component';
 import { FooterComponent } from '../layout/footer.component';
 import { AuthService } from '../../core/services/auth.service';
@@ -44,7 +45,8 @@ export class MyProfileComponent implements OnInit {
     private farmerOfferService: FarmerOfferService,
     private landOfferService: LandOfferService,
     private cdr: ChangeDetectorRef,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit() {
@@ -229,12 +231,7 @@ export class MyProfileComponent implements OnInit {
   editOffer(offer: any) {
     console.log('Edit offer:', offer);
     
-    if (offer.type === 'land') {
-      alert('Land offer editing is not yet implemented. Please contact support.');
-      return;
-    }
-    
-    // For equipment and farmer offers, open edit modal
+    // Open edit modal for all offer types
     this.openEditModal(offer);
   }
 
@@ -242,6 +239,12 @@ export class MyProfileComponent implements OnInit {
   showEditModal = false;
   editingOffer: any = null;
   editForm: any = {};
+
+  // Confirmation modal properties
+  showConfirmModal = false;
+  confirmMessage = '';
+  confirmCallback: (() => void) | null = null;
+
 
   openEditModal(offer: any) {
     this.editingOffer = offer;
@@ -259,12 +262,36 @@ export class MyProfileComponent implements OnInit {
         contactNumber: offer.originalOffer?.contactNumber || ''
       };
     } else if (offer.type === 'farmer') {
+      console.log('=== FARMER EDIT DEBUG ===');
+      console.log('Offer:', offer);
+      console.log('Original offer:', offer.originalOffer);
+      console.log('Employment type:', offer.originalOffer?.employmentType);
+      
       this.editForm = {
         fullName: offer.title,
         description: offer.description || '',
         currentAddress: offer.location,
-        employmentType: offer.originalOffer?.employmentType || 0,
+        employmentType: (offer.originalOffer?.employmentType || 0).toString(),
         age: offer.originalOffer?.age || '',
+        contactNumber: offer.originalOffer?.contactNumber || ''
+      };
+      
+      console.log('Edit form:', this.editForm);
+      
+      // Force set employment type to test binding
+      setTimeout(() => {
+        this.editForm.employmentType = '0'; // Force to Part-Time
+        console.log('Forced employment type to 0, form now:', this.editForm);
+      }, 100);
+    } else if (offer.type === 'land') {
+      this.editForm = {
+        title: offer.title,
+        description: offer.description || '',
+        price: offer.price?.replace(' JOD', '').replace('/month', '') || '',
+        location: offer.location,
+        isForRent: offer.originalOffer?.isForRent || false,
+        landSize: offer.originalOffer?.landSize || '',
+        leaseDuration: offer.originalOffer?.leaseDuration || '',
         contactNumber: offer.originalOffer?.contactNumber || ''
       };
     }
@@ -283,6 +310,8 @@ export class MyProfileComponent implements OnInit {
       this.updateEquipmentOffer();
     } else if (this.editingOffer.type === 'farmer') {
       this.updateFarmerOffer();
+    } else if (this.editingOffer.type === 'land') {
+      this.updateLandOffer();
     }
   }
 
@@ -313,11 +342,11 @@ export class MyProfileComponent implements OnInit {
           };
         }
         this.closeEditModal();
-        alert('Equipment offer updated successfully!');
+        this.toastr.success('Equipment offer updated successfully!');
       },
       error: (error) => {
         console.error('Error updating equipment offer:', error);
-        alert('Error updating offer. Please try again.');
+        this.toastr.error('Error updating offer. Please try again.');
       }
     });
   }
@@ -348,17 +377,55 @@ export class MyProfileComponent implements OnInit {
           };
         }
         this.closeEditModal();
-        alert('Farmer offer updated successfully!');
+        this.toastr.success('Farmer offer updated successfully!');
       },
       error: (error) => {
         console.error('Error updating farmer offer:', error);
-        alert('Error updating offer. Please try again.');
+        this.toastr.error('Error updating offer. Please try again.');
+      }
+    });
+  }
+
+  updateLandOffer() {
+    const updateDto = {
+      title: this.editForm.title,
+      description: this.editForm.description,
+      location: this.editForm.location,
+      price: parseFloat(this.editForm.price),
+      isForRent: this.editForm.isForRent,
+      landSize: this.editForm.landSize ? parseFloat(this.editForm.landSize) : undefined,
+      leaseDuration: this.editForm.isForRent && this.editForm.leaseDuration ? parseFloat(this.editForm.leaseDuration) : null,
+      contactNumber: this.editForm.contactNumber
+    };
+
+    this.landOfferService.updateOffer(this.editingOffer.id, updateDto).subscribe({
+      next: (updatedOffer) => {
+        console.log('Land offer updated:', updatedOffer);
+        // Update the offer in the local array
+        const index = this.offers.findIndex(o => o.id === this.editingOffer.id);
+        if (index !== -1) {
+          this.offers[index] = {
+            ...this.offers[index],
+            title: updatedOffer.title,
+            description: updatedOffer.description,
+            location: updatedOffer.location,
+            price: updatedOffer.isForRent ? `${updatedOffer.price} JOD/month` : `${updatedOffer.price} JOD`,
+            originalOffer: updatedOffer
+          };
+        }
+        this.closeEditModal();
+        this.toastr.success('Land offer updated successfully!');
+      },
+      error: (error) => {
+        console.error('Error updating land offer:', error);
+        this.toastr.error('Error updating offer. Please try again.');
       }
     });
   }
 
   deleteOffer(offer: any) {
-    if (confirm('Are you sure you want to delete this offer?')) {
+    this.confirmMessage = 'Are you sure you want to delete this offer?';
+    this.confirmCallback = () => {
       const originalOffer = offer.originalOffer;
       
       // Delete based on offer type
@@ -371,10 +438,8 @@ export class MyProfileComponent implements OnInit {
           deletePromise = this.farmerOfferService.deleteFarmerOffer(offer.id).toPromise();
           break;
         case 'land':
-          // Note: LandOfferService doesn't have delete method, so we'll just remove from UI
-          this.offers = this.offers.filter(o => o.id !== offer.id);
-          console.log('Land offer removed from UI (delete not implemented)');
-          return;
+          deletePromise = this.landOfferService.deleteOffer(offer.id).toPromise();
+          break;
         default:
           console.error('Unknown offer type:', offer.type);
           return;
@@ -386,10 +451,11 @@ export class MyProfileComponent implements OnInit {
           console.log('Offer deleted successfully:', offer.id);
         }).catch(error => {
           console.error('Error deleting offer:', error);
-          alert('Error deleting offer. Please try again.');
+          this.toastr.error('Error deleting offer. Please try again.');
         });
       }
-    }
+    };
+    this.showConfirmModal = true;
   }
 
   getOfferTypeIcon(type: string): string {
@@ -462,11 +528,11 @@ export class MyProfileComponent implements OnInit {
             this.editingOffer.originalOffer.photos = [];
           }
           this.editingOffer.originalOffer.photos.push(photo);
-          alert('Image uploaded successfully!');
+          this.toastr.success('Image uploaded successfully!');
         },
         error: (error) => {
           console.error('Error uploading image:', error);
-          alert('Error uploading image. Please try again.');
+          this.toastr.error('Error uploading image. Please try again.');
         }
       });
     } else if (this.editingOffer.type === 'farmer') {
@@ -478,11 +544,27 @@ export class MyProfileComponent implements OnInit {
             this.editingOffer.originalOffer.photos = [];
           }
           this.editingOffer.originalOffer.photos.push(photo);
-          alert('Image uploaded successfully!');
+          this.toastr.success('Image uploaded successfully!');
         },
         error: (error) => {
           console.error('Error uploading image:', error);
-          alert('Error uploading image. Please try again.');
+          this.toastr.error('Error uploading image. Please try again.');
+        }
+      });
+    } else if (this.editingOffer.type === 'land') {
+      this.landOfferService.uploadPhoto(this.editingOffer.id, file).subscribe({
+        next: (photo) => {
+          console.log('New image uploaded:', photo);
+          // Add the new photo to the current photos array
+          if (!this.editingOffer.originalOffer.photos) {
+            this.editingOffer.originalOffer.photos = [];
+          }
+          this.editingOffer.originalOffer.photos.push(photo);
+          this.toastr.success('Image uploaded successfully!');
+        },
+        error: (error) => {
+          console.error('Error uploading image:', error);
+          this.toastr.error('Error uploading image. Please try again.');
         }
       });
     }
@@ -491,18 +573,19 @@ export class MyProfileComponent implements OnInit {
   removeImage(photoId: number) {
     if (!this.editingOffer) return;
 
-    if (confirm('Are you sure you want to delete this image?')) {
+    this.confirmMessage = 'Are you sure you want to delete this image?';
+    this.confirmCallback = () => {
       if (this.editingOffer.type === 'equipment') {
         this.equipmentOfferService.deletePhoto(this.editingOffer.id, photoId).subscribe({
           next: () => {
             console.log('Image deleted successfully');
             // Remove the photo from the current photos array
             this.editingOffer.originalOffer.photos = this.editingOffer.originalOffer.photos.filter((p: any) => p.id !== photoId);
-            alert('Image deleted successfully!');
+            this.toastr.success('Image deleted successfully!');
           },
           error: (error) => {
             console.error('Error deleting image:', error);
-            alert('Error deleting image. Please try again.');
+            this.toastr.error('Error deleting image. Please try again.');
           }
         });
       } else if (this.editingOffer.type === 'farmer') {
@@ -511,15 +594,44 @@ export class MyProfileComponent implements OnInit {
             console.log('Image deleted successfully');
             // Remove the photo from the current photos array
             this.editingOffer.originalOffer.photos = this.editingOffer.originalOffer.photos.filter((p: any) => p.id !== photoId);
-            alert('Image deleted successfully!');
+            this.toastr.success('Image deleted successfully!');
           },
           error: (error) => {
             console.error('Error deleting image:', error);
-            alert('Error deleting image. Please try again.');
+            this.toastr.error('Error deleting image. Please try again.');
+          }
+        });
+      } else if (this.editingOffer.type === 'land') {
+        this.landOfferService.deletePhoto(this.editingOffer.id, photoId).subscribe({
+          next: () => {
+            console.log('Image deleted successfully');
+            // Remove the photo from the current photos array
+            this.editingOffer.originalOffer.photos = this.editingOffer.originalOffer.photos.filter((p: any) => p.id !== photoId);
+            this.toastr.success('Image deleted successfully!');
+          },
+          error: (error) => {
+            console.error('Error deleting image:', error);
+            this.toastr.error('Error deleting image. Please try again.');
           }
         });
       }
-    }
+    };
+    this.showConfirmModal = true;
   }
+
+  // Confirmation modal methods
+  confirmAction() {
+    if (this.confirmCallback) {
+      this.confirmCallback();
+    }
+    this.closeConfirmModal();
+  }
+
+  closeConfirmModal() {
+    this.showConfirmModal = false;
+    this.confirmMessage = '';
+    this.confirmCallback = null;
+  }
+
 
 }

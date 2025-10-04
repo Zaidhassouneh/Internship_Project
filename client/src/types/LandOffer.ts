@@ -10,6 +10,17 @@ landSize?: number;
 leaseDuration?: number | null;
 contactNumber: string;
 }
+
+export interface LandOfferUpdateDto {
+  title?: string;
+  description?: string;
+  location?: string;
+  price?: number;
+  isForRent?: boolean;
+  landSize?: number;
+  leaseDuration?: number | null;
+  contactNumber?: string;
+}
 export interface LandOfferDto {
   id: number;
   ownerId: string;

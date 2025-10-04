@@ -1,5 +1,8 @@
 @charset "UTF-8";
 
+/* Toastr CSS */
+@import 'ngx-toastr/toastr';
+
 /* Global text overflow prevention */
 * {
   word-wrap: break-word;
